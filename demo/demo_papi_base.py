@@ -3,7 +3,7 @@
 import asyncio
 import sys
 
-from pixivpy3 import AppPixivAPI, PixivAPI
+from pixivpy_async import PixivAPI
 
 sys.dont_write_bytecode = True
 
@@ -14,13 +14,13 @@ _PASSWORD = "userpay"
 async def papi_base(api):
     # PAPI.works
     json_result = await api.works(46363414)
-    print(json_result)
+    # print(json_result)
     illust = json_result.response[0]
     print(">>> %s, origin url: %s" % (illust.caption, illust.image_urls['large']))
 
     # PAPI.users
     json_result = await api.users(1184799)
-    print(json_result)
+    # print(json_result)
     user = json_result.response[0]
     print(user.profile.introduction)
 

@@ -3,7 +3,7 @@
 import asyncio
 import sys
 
-from pixivpy3 import AppPixivAPI
+from pixivpy_async import AppPixivAPI
 
 sys.dont_write_bytecode = True
 
@@ -13,35 +13,35 @@ _PASSWORD = "userpay"
 
 async def appapi_users(aapi):
     json_result = await aapi.user_detail(275527)
-    print(json_result)
+    # print(json_result)
     user = json_result.user
     print("%s(@%s) region=%s" % (user.name, user.account, json_result.profile.region))
 
     json_result = await aapi.user_illusts(275527)
-    print(json_result)
+    # print(json_result)
     illust = json_result.illusts[0]
     print(">>> %s, origin url: %s" % (illust.title, illust.image_urls['large']))
 
     # get next page
-    next_qs = await aapi.parse_qs(json_result.next_url)
+    next_qs = aapi.parse_qs(json_result.next_url)
     json_result = await aapi.user_illusts(**next_qs)
-    print(json_result)
+    # print(json_result)
     illust = json_result.illusts[0]
     print("  > %s, origin url: %s" % (illust.title, illust.image_urls['large']))
 
     json_result = await aapi.user_bookmarks_illust(2088434)
-    print(json_result)
+    # print(json_result)
     illust = json_result.illusts[0]
     print(">>> %s, origin url: %s" % (illust.title, illust.image_urls['large']))
 
     json_result = await aapi.user_following(7314824)
-    print(json_result)
+    # print(json_result)
     user_preview = json_result.user_previews[0]
     print(">>> %s(@%s)" % (user_preview.user.name, user_preview.user.account))
 
-    next_qs = await aapi.parse_qs(json_result.next_url)
+    next_qs = aapi.parse_qs(json_result.next_url)
     json_result = await aapi.user_following(**next_qs)
-    print(json_result)
+    # print(json_result)
     user_preview = json_result.user_previews[0]
     print("  > %s(@%s)" % (user_preview.user.name, user_preview.user.account))
 

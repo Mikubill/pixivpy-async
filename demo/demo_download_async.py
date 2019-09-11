@@ -3,7 +3,7 @@
 import asyncio
 import os
 
-from pixivpy3 import AppPixivAPI
+from pixivpy_async import AppPixivAPI
 
 _USERNAME = "userbay"
 _PASSWORD = "userpay"

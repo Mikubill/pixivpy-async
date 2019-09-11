@@ -3,7 +3,7 @@
 import asyncio
 import sys
 
-from pixivpy3 import AppPixivAPI, PixivAPI
+from pixivpy_async import PixivAPI
 
 sys.dont_write_bytecode = True
 

@@ -3,7 +3,6 @@ core/
 
 .idea
 *.pyc
-test.py
 dumpObj.py
 url.txt
 
@@ -15,3 +14,7 @@ MANIFEST
 
 example/
 demo_debug.py
+
+setup.py
+setup.cfg
+PixivPy_Async.egg-info/

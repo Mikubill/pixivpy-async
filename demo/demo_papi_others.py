@@ -3,7 +3,7 @@
 import asyncio
 import sys
 
-from pixivpy3 import PixivAPI
+from pixivpy_async import PixivAPI
 
 sys.dont_write_bytecode = True
 
@@ -14,13 +14,13 @@ _PASSWORD = "userpay"
 async def papi_ranking(api):
     # PAPI.ranking
     json_result = await api.ranking('illust', 'weekly', 1)
-    print(json_result)
+    # print(json_result)
     illust = json_result.response[0].works[0].work
     print(">>> %s origin url: %s" % (illust.title, illust.image_urls['large']))
 
     # PAPI.ranking(2015-05-01)
     json_result = await api.ranking(ranking_type='all', mode='daily', page=1, date='2015-05-01')
-    print(json_result)
+    # print(json_result)
     illust = json_result.response[0].works[0].work
     print(">>> %s origin url: %s" % (illust.title, illust.image_urls['large']))
 
@@ -29,7 +29,7 @@ async def papi_search(api):
     # PAPI.search_works
     json_result = await api.search_works("五航戦 姉妹", page=1, mode='text')
     # json_result = await api.search_works("水遊び", page=1, mode='exact_tag')
-    print(json_result)
+    # print(json_result)
     illust = json_result.response[0]
     print(">>> %s origin url: %s" % (illust.title, illust.image_urls['large']))
 
@@ -37,7 +37,7 @@ async def papi_search(api):
 async def papi_others(api):
     # PAPI.latest_works (New -> Everyone)
     json_result = await api.latest_works()
-    print(json_result)
+    # print(json_result)
     illust = json_result.response[0]
     print(">>> %s url: %s" % (illust.title, illust.image_urls.px_480mw))
 

@@ -1,20 +1,15 @@
 # -*- coding:utf-8 -*-
-import asyncio
 import hashlib
-import logging
 import os
-import random
 from datetime import datetime
+from .error import *
+from .utils import Utils
+from .api import API
+from .net import Net
 
-import aiohttp
 
-from .utils import PixivError, Utils
-
-
-class BasePixivAPI(Utils):
+class BasePixivAPI(Net, Utils):
     def __init__(self, **requests_kwargs):
-        self.session = aiohttp.ClientSession()
-        self.requests_kwargs = requests_kwargs
         self.additional_headers = {}
         self.client_id = 'MOBrBDS8blbauoSck0ZfDbtuzpyT'
         self.client_secret = 'lsACyCD94FhDUtGTXi3QzcFE2uU1hqtDaKeqrdwj'
@@ -22,6 +17,27 @@ class BasePixivAPI(Utils):
         self.access_token = None
         self.user_id = 0
         self.refresh_token = None
+        self.api = API()
+        super().__init__(**requests_kwargs)
+
+    async def requests_(
+            self,
+            method: str,
+            url: str,
+            headers: dict = None,
+            params: dict = None,
+            data: dict = None,
+            auth: bool = True
+    ):
+        if auth:
+            if self.access_token is None:
+                raise NoTokenError
+        headers = self.set_headers(headers, self.access_token)
+        return await self.requests_call(method=method, url=url, headers=headers, params=params, data=data)
+
+    def set_api_proxy(self, proxy_hosts="http://app-api.pixivlite.com"):
+        """Set proxy hosts: eg pixivlite.com"""
+        self.api = API(proxy_hosts)
 
     def set_auth(self, access_token, refresh_token=None):
         self.access_token = access_token
@@ -41,31 +57,19 @@ class BasePixivAPI(Utils):
         data = data if data else dict()
         params = params if params else dict()
         headers = headers if headers else dict()
-        w = await self.req(method, url, headers, params, data)
+        w = await self.req(method=method, url=url, headers=headers, params=params, data=data)
         return self.parse_json(w)
 
-    async def req(self, method, url, headers=None, data=None, params=None, retr=0):
+    async def req(self, method, url, headers=None, data=None, params=None):
         headers.update(self.additional_headers)
-        try:
-            if method == 'GET':
-                return await self.fetch(self.session, url, headers, params)
-            elif method == 'POST':
-                return await self.post(self.session, url, data, headers, params)
-            elif method == 'DELETE':
-                return await self.delete(self.session, url, headers, params)
-            else:
-                raise PixivError('Unknow method: %s' % method)
-        except asyncio.TimeoutError:
-            """Retry for timeout"""
-            logging.warning('requests %s %s  timeout. retrying %s time(s)...' % (method, url, retr + 1))
-            await asyncio.sleep(random.randint(1, 3))
-            if retr < 5:
-                return await self.req(method, url, headers=headers, params=params,
-                                      data=data, retr=retr + 1)
-            else:
-                raise PixivError('requests %s %s timeout error' % (method, url))
-        except Exception as e:
-            raise PixivError('requests %s %s error: %s' % (method, url, e))
+        if method == 'GET':
+            return await self.fetch(url, headers, params)
+        elif method == 'POST':
+            return await self.post(url, data, headers, params)
+        elif method == 'DELETE':
+            return await self.delete(url, headers, params)
+        else:
+            raise MethodError(method)
 
     async def login(self, username=None, password=None, refresh_token=None):
         """Login with password, or use the refresh_token to acquire a new bearer token"""
@@ -91,26 +95,18 @@ class BasePixivAPI(Utils):
             data['grant_type'] = 'refresh_token'
             data['refresh_token'] = refresh_token or self.refresh_token
         else:
-            raise PixivError(
-                '[ERROR] auth() but no password or refresh_token is set.'
-            )
+            raise NoLoginError
 
         # return auth/token response
-        return self.auth_req(url, headers, data)
+        return await self.auth_req(url, headers, data)
 
     async def auth_req(self, url, headers, data):
-        r, status, code = await self.auth_request(self.session, url, headers, data)
+        r, status, code = await self.auth(url, headers, data)
         if not status:
             if data['grant_type'] == 'password':
-                raise PixivError(
-                    '[ERROR] auth() failed! check username and password.'
-                    '\nHTTP %s: %s' % (code, r)
-                )
+                raise AuthCredentialsError(code, r)
             else:
-                raise PixivError(
-                    '[ERROR] auth() failed! check refresh_token.'
-                    '\nHTTP %s: %s' % (code, r)
-                )
+                raise AuthTokenError(code, r)
 
         token = None
         try:
@@ -119,7 +115,7 @@ class BasePixivAPI(Utils):
             self.user_id = token.response.user.id
             self.refresh_token = token.response.refresh_token
         except Exception as e:
-            raise PixivError('Get access_token error! \nResponse: %s\nError: %s' % (token, e))
+            raise TokenError(token, e)
 
         return token
 
@@ -129,6 +125,6 @@ class BasePixivAPI(Utils):
         name = prefix + name if name else prefix + os.path.basename(url)
         img_path = os.path.join(path, name)
         if not os.path.exists(img_path) or replace:
-            e = await self.down_request(self.session, url, referer)
+            e = await self.down(url, referer)
             with open(img_path, 'wb') as out_file:
                 out_file.write(e)

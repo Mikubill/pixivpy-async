@@ -3,7 +3,7 @@
 import asyncio
 import sys
 
-from pixivpy3 import AppPixivAPI
+from pixivpy_async import AppPixivAPI
 
 sys.dont_write_bytecode = True
 
@@ -13,12 +13,12 @@ _PASSWORD = "userpay"
 
 async def appapi_ranking(aapi):
     json_result = await aapi.illust_ranking('day_male')
-    print(json_result)
+    # print(json_result)
     illust = json_result.illusts[0]
     print(">>> %s, origin url: %s" % (illust.title, illust.image_urls['large']))
 
     # get next page
-    next_qs = await aapi.parse_qs(json_result.next_url)
+    next_qs = aapi.parse_qs(json_result.next_url)
     json_result = await aapi.illust_ranking(**next_qs)
     # print(json_result)
     illust = json_result.illusts[0]
@@ -26,7 +26,7 @@ async def appapi_ranking(aapi):
 
     # 2016-07-15 日的过去一周排行
     json_result = await aapi.illust_ranking('week', date='2016-07-15')
-    print(json_result)
+    # print(json_result)
     illust = json_result.illusts[0]
     print(">>> %s, origin url: %s" % (illust.title, illust.image_urls['large']))
 

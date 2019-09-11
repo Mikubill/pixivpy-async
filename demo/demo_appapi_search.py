@@ -3,7 +3,7 @@
 import asyncio
 import sys
 
-from pixivpy3 import AppPixivAPI
+from pixivpy_async import AppPixivAPI
 
 sys.dont_write_bytecode = True
 
@@ -20,12 +20,12 @@ async def appapi_search(aapi):
         print("%s -  %s(id=%s)" % (trend_tag.tag, trend_tag.illust.title, trend_tag.illust.id))
 
     json_result = await aapi.search_illust(first_tag, search_target='partial_match_for_tags')
-    print(json_result)
+    # print(json_result)
     illust = json_result.illusts[0]
     print(">>> %s, origin url: %s" % (illust.title, illust.image_urls['large']))
 
     # get next page
-    next_qs = await aapi.parse_qs(json_result.next_url)
+    next_qs = aapi.parse_qs(json_result.next_url)
     json_result = await aapi.search_illust(**next_qs)
     # print(json_result)
     illust = json_result.illusts[0]

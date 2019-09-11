@@ -3,7 +3,7 @@
 import asyncio
 import sys
 
-from pixivpy3 import AppPixivAPI
+from pixivpy_async import AppPixivAPI
 
 sys.dont_write_bytecode = True
 
@@ -13,15 +13,15 @@ _PASSWORD = "userpay"
 
 async def appapi_illust(aapi):
     json_result = await aapi.illust_detail(59580629)
-    print(json_result)
+    # print(json_result)
     illust = json_result.illust
     print(">>> %s, origin url: %s" % (illust.title, illust.image_urls['large']))
 
     json_result = await aapi.illust_comments(59580629)
-    print(json_result)
+    # print(json_result)
 
     json_result = await aapi.ugoira_metadata(51815717)
-    print(json_result)
+    # print(json_result)
     metadata = json_result.ugoira_metadata
     print(">>> frames=%d %s" % (len(metadata.frames), metadata.zip_urls.medium))
 

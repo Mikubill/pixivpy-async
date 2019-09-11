@@ -1,55 +1,12 @@
 language: python
 
 cache: pip
-
-# command to run tests
-jobs:
-  include:
-    - stage: demo_async_3.7
-      python: "3.7"
-      install: pip install -r requirements.txt
-      env: app=appapi_auth_api
-      script: co demo/* ./ && python demo_appapi_auth_api.py
-    - python: "3.7"
-      install: pip install -r requirements.txt
-      env: app=appapi_illust
-      script: co demo/* ./ && python demo_appapi_illust.py
-    - python: "3.7"
-      install: pip install -r requirements.txt
-      env: app=appapi_ranking
-      script: co demo/* ./ && python demo_appapi_ranking.py
-    - python: "3.7"
-      install: pip install -r requirements.txt
-      env: app=appapi_recommend
-      script: co demo/* ./ && python demo_appapi_recommend.py
-    - python: "3.7"
-      install: pip install -r requirements.txt
-      env: app=appapi_search
-      script: co demo/* ./ && python demo_appapi_search.py
-    - python: "3.7"
-      install: pip install -r requirements.txt
-      env: app=appapi_users
-      script: co demo/* ./ && python demo_appapi_users.py
-    - python: "3.7"
-      install: pip install -r requirements.txt
-      env: app=download_async
-      script: co demo/* ./ && python demo_download_async.py
-    - python: "3.7"
-      install: pip install -r requirements.txt
-      env: app=papi_base
-      script: co demo/* ./ && python demo_papi_base.py
-    - python: "3.7"
-      install: pip install -r requirements.txt
-      env: app=papi_others
-      script: co demo/* ./ && python demo_papi_others.py
-    - python: "3.7"
-      install: pip install -r requirements.txt
-      env: app=pypi_me
-      script: co demo/* ./ && python demo_pypi_me.py
-    - python: "3.7"
-      install: pip install -r requirements.txt
-      env: app=pypi_users
-      script: co demo/* ./ && python demo_pypi_users.py
-branches:
-  only:
+python: "3.7"
+install:
+  - pip install -r requirements.txt
+  - pip install codecov
+script:
+  - coverage run test.py
+  - codecov --token=$CODECOV_TOKEN
+only:
     - master

@@ -1,16 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import sys
-if sys.version_info >= (3, 0):
-    import imp
-    imp.reload(sys)
-else:
-    reload(sys)
-    sys.setdefaultencoding('utf8')
-sys.dont_write_bytecode = True
-
-from pixivpy3 import *
+from pixivpy_async import *
 from datetime import *
 
 # change _USERNAME,_PASSWORD first!

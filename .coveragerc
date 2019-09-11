@@ -1,0 +1,7 @@
+[run]
+omit =
+        *Test*
+        */usr/local/lib*
+        */__init__.py
+        test.py
+        */error.py
