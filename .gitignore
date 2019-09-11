@@ -1,0 +1,17 @@
+.DS*
+core/
+
+.idea
+*.pyc
+test.py
+dumpObj.py
+url.txt
+
+# pypi
+dist/
+build/
+PixivPy.egg-info/
+MANIFEST
+
+example/
+demo_debug.py
