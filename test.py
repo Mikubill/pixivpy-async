@@ -47,22 +47,22 @@ async def async_func():
         await aapid.illust_recommended(req_auth=True)
         await aapid.illust_ranking('day', date='2016-08-01')
 
-        papid = ppapi(client=client)
-        await papid.login( username=_USERNAME, password=_PASSWORD)
-        await papid.works(46363414),
-        await papid.users(1184799),
-        await papid.me_feeds(show_r18=0),
-        await papid.me_favorite_works(publicity='private'),
-        await papid.me_following_works(),
-        await papid.me_following(),
-        await papid.users_works(1184799),
-        await papid.users_favorite_works(1184799),
-        await papid.users_feeds(1184799, show_r18=0),
-        await papid.users_following(4102577),
-        await papid.ranking('illust', 'weekly', 1),
-        await papid.ranking(ranking_type='all', mode='daily', page=1, date='2015-05-01'),
-        await papid.search_works("五航戦 姉妹", page=1, mode='text'),
-        await papid.latest_works()
+        # papid = ppapi(client=client)
+        # await papid.login( username=_USERNAME, password=_PASSWORD)
+        # await papid.works(46363414),
+        # await papid.users(1184799),
+        # await papid.me_feeds(show_r18=0),
+        # await papid.me_favorite_works(publicity='private'),
+        # await papid.me_following_works(),
+        # await papid.me_following(),
+        # await papid.users_works(1184799),
+        # await papid.users_favorite_works(1184799),
+        # await papid.users_feeds(1184799, show_r18=0),
+        # await papid.users_following(4102577),
+        # await papid.ranking('illust', 'weekly', 1),
+        # await papid.ranking(ranking_type='all', mode='daily', page=1, date='2015-05-01'),
+        # await papid.search_works("五航戦 姉妹", page=1, mode='text'),
+        # await papid.latest_works()
 
 
 class TestMethods(unittest.TestCase):
@@ -152,32 +152,32 @@ class TestMethods(unittest.TestCase):
             aapi.download(image_url, path='.', name=name)
             self.assertTrue(os.path.exists(name))
 
-    def test_papi_base(self):
+    # def test_papi_base(self):
+    #
+    #     self.assertIsNotNone(papi.works(46363414))
+    #     self.assertIsNotNone(papi.users(1184799))
+    #
+    # def test_papi_me(self):
+    #
+    #     self.assertIsNotNone(papi.me_feeds(show_r18=0))
+    #     self.assertIsNotNone(papi.me_favorite_works(publicity='private'))
+    #     self.assertIsNotNone(papi.me_following_works())
+    #     self.assertIsNotNone(papi.me_following())
 
-        self.assertIsNotNone(papi.works(46363414))
-        self.assertIsNotNone(papi.users(1184799))
+    # def test_papi_users(self):
+    #
+    #     self.assertIsNotNone(papi.users_works(1184799))
+    #     self.assertIsNotNone(papi.users_favorite_works(1184799))
+    #     self.assertIsNotNone(papi.users_feeds(1184799, show_r18=0))
+    #     self.assertIsNotNone(papi.users_following(4102577))
 
-    def test_papi_me(self):
-
-        self.assertIsNotNone(papi.me_feeds(show_r18=0))
-        self.assertIsNotNone(papi.me_favorite_works(publicity='private'))
-        self.assertIsNotNone(papi.me_following_works())
-        self.assertIsNotNone(papi.me_following())
-
-    def test_papi_users(self):
-
-        self.assertIsNotNone(papi.users_works(1184799))
-        self.assertIsNotNone(papi.users_favorite_works(1184799))
-        self.assertIsNotNone(papi.users_feeds(1184799, show_r18=0))
-        self.assertIsNotNone(papi.users_following(4102577))
-
-    def test_papi_others(self):
-
-        self.assertIsNotNone(papi.ranking('illust', 'weekly', 1))
-        self.assertIsNotNone(papi.ranking(ranking_type='all', mode='daily', page=1, date='2019-08-01'))
-        self.assertIsNotNone(papi.search_works("しらたま", page=1, mode='text'))
-        self.assertIsNotNone(papi.latest_works())
-        self.assertIsNotNone(papi.ranking_all(date='2019-07-01'))
+    # def test_papi_others(self):
+    #
+    #     self.assertIsNotNone(papi.ranking('illust', 'weekly', 1))
+    #     self.assertIsNotNone(papi.ranking(ranking_type='all', mode='daily', page=1, date='2019-08-01'))
+    #     self.assertIsNotNone(papi.search_works("しらたま", page=1, mode='text'))
+    #     self.assertIsNotNone(papi.latest_works())
+    #     self.assertIsNotNone(papi.ranking_all(date='2019-07-01'))
 
     def test_deep(self):
         aapi.set_api_proxy("http://app-api.pixivlite.com")
