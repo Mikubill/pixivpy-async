@@ -16,9 +16,9 @@ _USERNAME = "userbay"
 _PASSWORD = "userpay"
 
 aapi = AppPixivAPI()
-papi = PixivAPI()
+# papi = PixivAPI()
 aapi.login(_USERNAME, _PASSWORD)
-papi.login(_USERNAME, _PASSWORD)
+# papi.login(_USERNAME, _PASSWORD)
 t = time.time()
 
 
@@ -68,9 +68,9 @@ async def async_func():
 class TestMethods(unittest.TestCase):
     def test_login(self):
         newaapi = AppPixivAPI()
-        newpapi = PixivAPI()
+        # newpapi = PixivAPI()
         self.assertIsNotNone(newaapi.login(_USERNAME, _PASSWORD))
-        self.assertIsNotNone(newpapi.login(_USERNAME, _PASSWORD))
+        # self.assertIsNotNone(newpapi.login(_USERNAME, _PASSWORD))
 
     def test_illust_0(self):
 
@@ -108,11 +108,11 @@ class TestMethods(unittest.TestCase):
     def test_bookmark(self):
         self.assertIsNotNone(aapi.user_bookmarks_illust(2088434))
 
-    def test_bookmark_1(self):
-        self.assertIsNotNone(aapi.user_bookmark_tags_illust(2088434))
+    # def test_bookmark_1(self):
+    #     self.assertIsNotNone(aapi.user_bookmark_tags_illust(2088434))
 
-    def test_showcase(self):
-        self.assertIsNotNone(aapi.showcase_article(4616))
+    # def test_showcase(self):
+    #     self.assertIsNotNone(aapi.showcase_article(4616))
 
     def test_follow(self):
 
@@ -179,9 +179,9 @@ class TestMethods(unittest.TestCase):
     #     self.assertIsNotNone(papi.latest_works())
     #     self.assertIsNotNone(papi.ranking_all(date='2019-07-01'))
 
-    def test_deep(self):
-        aapi.set_api_proxy("http://app-api.pixivlite.com")
-        self.assertIsNotNone(aapi.illust_ranking('day'))
+    # def test_deep(self):
+    #     aapi.set_api_proxy("http://app-api.pixivlite.com")
+    #     self.assertIsNotNone(aapi.illust_ranking('day'))
 
     def test_deep_deep(self):
         newaapi0 = AppPixivAPI()
