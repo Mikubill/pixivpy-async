@@ -1,50 +1,54 @@
-class RetryExhaustedError(Exception):
+class PixivError(Exception):
+    pass
+
+
+class RetryExhaustedError(PixivError):
     def __init__(self, name=None, args=None, kwargs=None):
         self.name = name
         self.reason = '{}, {}'.format(args, kwargs)
-        super(Exception, self).__init__(self, self.reason)
+        super(PixivError, self).__init__(self, self.reason)
 
     def __str__(self):
         return self.reason
 
 
-class NoLoginError(Exception):
+class NoLoginError(PixivError):
     def __init__(self):
         self.reason = 'Require auth() but no password or refresh_token is set.'
-        super(Exception, self).__init__(self, self.reason)
+        super(PixivError, self).__init__(self, self.reason)
 
     def __str__(self):
         return self.reason
 
 
-class AuthCredentialsError(Exception):
+class AuthCredentialsError(PixivError):
     def __init__(self, code=None, r=None):
         self.reason = 'Run auth() failed! Check username and password.\nHTTP %s: %s' % (code, r)
-        super(Exception, self).__init__(self, self.reason)
+        super(PixivError, self).__init__(self, self.reason)
 
     def __str__(self):
         return self.reason
 
 
-class AuthTokenError(Exception):
+class AuthTokenError(PixivError):
     def __init__(self, code=None, r=None):
         self.reason = 'Run auth() failed! Check refresh_token.\nHTTP %s: %s' % (code, r)
-        super(Exception, self).__init__(self, self.reason)
+        super(PixivError, self).__init__(self, self.reason)
 
     def __str__(self):
         return self.reason
 
 
-class TokenError(Exception):
+class TokenError(PixivError):
     def __init__(self, token=None, e=None):
         self.reason = 'Get access_token error! \nResponse: %s\nError: %s' % (token, e)
-        super(Exception, self).__init__(self, self.reason)
+        super(PixivError, self).__init__(self, self.reason)
 
     def __str__(self):
         return self.reason
 
 
-class MethodError(Exception):
+class MethodError(PixivError):
     def __init__(self, method=None):
         self.reason = 'Unknown method: %s' % method
 
@@ -52,7 +56,7 @@ class MethodError(Exception):
         return self.reason
 
 
-class NoTokenError(Exception):
+class NoTokenError(PixivError):
     def __init__(self):
         self.reason = 'No access_token Found!'
 
