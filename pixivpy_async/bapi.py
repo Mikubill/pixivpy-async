@@ -2,6 +2,7 @@
 import hashlib
 import os
 from datetime import datetime
+import aiofiles
 from .error import *
 from .utils import Utils
 from .api import API
@@ -126,5 +127,5 @@ class BasePixivAPI(Net, Utils):
         img_path = os.path.join(path, name)
         if not os.path.exists(img_path) or replace:
             e = await self.down(url, referer)
-            with open(img_path, 'wb') as out_file:
-                out_file.write(e)
+            async with aiofiles.open(img_path, mode='wb') as out_file:
+                await out_file.write(e)
