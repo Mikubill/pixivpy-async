@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 import asyncio
 import os
+import io
 import sys
 import time
 import unittest
@@ -16,9 +17,9 @@ _USERNAME = "userbay"
 _PASSWORD = "userpay"
 
 aapi = AppPixivAPI()
-# papi = PixivAPI()
+papi = PixivAPI()
 aapi.login(_USERNAME, _PASSWORD)
-# papi.login(_USERNAME, _PASSWORD)
+papi.login(_USERNAME, _PASSWORD)
 t = time.time()
 
 
@@ -144,40 +145,41 @@ class TestMethods(unittest.TestCase):
         json_result = aapi.illust_ranking('day', date='2019-08-01')
 
         # Disabled due to Rate Limit
-        for illust in json_result.illusts[:3]:
+        for illust in json_result.illusts[:5]:
             image_url = illust.meta_single_page.get('original_image_url', illust.image_urls.large)
             url_basename = os.path.basename(image_url)
             extension = os.path.splitext(url_basename)[1]
             name = "illust_id_%d_%s%s" % (illust.id, illust.title, extension)
             aapi.download(image_url, path='.', name=name)
+            aapi.download(image_url, path='.', fname=io.BytesIO())
             self.assertTrue(os.path.exists(name))
 
-    # def test_papi_base(self):
-    #
-    #     self.assertIsNotNone(papi.works(46363414))
-    #     self.assertIsNotNone(papi.users(1184799))
-    #
-    # def test_papi_me(self):
-    #
-    #     self.assertIsNotNone(papi.me_feeds(show_r18=0))
-    #     self.assertIsNotNone(papi.me_favorite_works(publicity='private'))
-    #     self.assertIsNotNone(papi.me_following_works())
-    #     self.assertIsNotNone(papi.me_following())
+    def test_papi_base(self):
+    
+        self.assertIsNotNone(papi.works(46363414))
+        self.assertIsNotNone(papi.users(1184799))
+    
+    def test_papi_me(self):
+    
+        self.assertIsNotNone(papi.me_feeds(show_r18=0))
+        self.assertIsNotNone(papi.me_favorite_works(publicity='private'))
+        self.assertIsNotNone(papi.me_following_works())
+        self.assertIsNotNone(papi.me_following())
 
-    # def test_papi_users(self):
-    #
-    #     self.assertIsNotNone(papi.users_works(1184799))
-    #     self.assertIsNotNone(papi.users_favorite_works(1184799))
-    #     self.assertIsNotNone(papi.users_feeds(1184799, show_r18=0))
-    #     self.assertIsNotNone(papi.users_following(4102577))
+    def test_papi_users(self):
+    
+        self.assertIsNotNone(papi.users_works(1184799))
+        self.assertIsNotNone(papi.users_favorite_works(1184799))
+        self.assertIsNotNone(papi.users_feeds(1184799, show_r18=0))
+        self.assertIsNotNone(papi.users_following(4102577))
 
-    # def test_papi_others(self):
-    #
-    #     self.assertIsNotNone(papi.ranking('illust', 'weekly', 1))
-    #     self.assertIsNotNone(papi.ranking(ranking_type='all', mode='daily', page=1, date='2019-08-01'))
-    #     self.assertIsNotNone(papi.search_works("しらたま", page=1, mode='text'))
-    #     self.assertIsNotNone(papi.latest_works())
-    #     self.assertIsNotNone(papi.ranking_all(date='2019-07-01'))
+    def test_papi_others(self):
+    
+        self.assertIsNotNone(papi.ranking('illust', 'weekly', 1))
+        self.assertIsNotNone(papi.ranking(ranking_type='all', mode='daily', page=1, date='2019-08-01'))
+        self.assertIsNotNone(papi.search_works("しらたま", page=1, mode='text'))
+        self.assertIsNotNone(papi.latest_works())
+        self.assertIsNotNone(papi.ranking_all(date='2019-07-01'))
 
     # def test_deep(self):
     #     aapi.set_api_proxy("http://app-api.pixivlite.com")
@@ -205,11 +207,11 @@ class TestMethods(unittest.TestCase):
 
     def test_async_gather(self):
         c = time.time()
-        print('Sync Func: %s s' % (c - t))
+#        print('Sync Func: %s s' % (c - t))
         p = asyncio.gather(async_func())
         loop = asyncio.get_event_loop()
         loop.run_until_complete(p)
-        print('Async Func: %s s' % (time.time() - c))
+#        print('Async Func: %s s' % (time.time() - c))
 
 
 if __name__ == '__main__':

@@ -8,6 +8,11 @@ from .utils import Utils
 from .api import API
 from .net import Net
 
+try:
+    basestring
+except NameError:
+    basestring = str
+
 
 class BasePixivAPI(Net, Utils):
     def __init__(self, **requests_kwargs):
@@ -120,12 +125,22 @@ class BasePixivAPI(Net, Utils):
 
         return token
 
-    async def download(self, url, prefix='', path=os.path.curdir,
+    async def download(self, url, prefix='', path=os.path.curdir, fname=None,
                        name=None, replace=False, referer='https://app-api.pixiv.net/'):
-
-        name = prefix + name if name else prefix + os.path.basename(url)
-        img_path = os.path.join(path, name)
-        if not os.path.exists(img_path) or replace:
-            e = await self.down(url, referer)
-            async with aiofiles.open(img_path, mode='wb') as out_file:
-                await out_file.write(e)
+        if fname is None and name is None:
+            name = os.path.basename(url)
+        elif isinstance(fname, basestring):
+            name = fname
+        if name:
+            img_path = os.path.join(path, prefix + name)
+            if os.path.exists(img_path) and not replace:
+                return False
+            else:
+                response = await self.down(url, referer)
+                async with aiofiles.open(img_path, mode='wb') as out_file:
+                    await out_file.write(response)
+        else:
+            response = await self.down(url, referer)
+            fname.write(response)
+        del response
+        return True
