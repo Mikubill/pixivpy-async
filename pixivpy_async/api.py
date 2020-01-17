@@ -1,9 +1,12 @@
 class API:
-    def __init__(self, app_hosts="https://app-api.pixiv.net"):
+    def __init__(self, app_hosts="https://app-api.pixiv.net",
+                 pub_hosts="https://public-api.secure.pixiv.net",
+                 auth_hosts="https://oauth.secure.pixiv.net"):
         self.appv1 = '%s/v1' % app_hosts
         self.appv2 = '%s/v2' % app_hosts
-        self.prefix = 'https://public-api.secure.pixiv.net/v1.1/'
-        self.apiv1 = 'https://public-api.secure.pixiv.net/v1'
+        self.prefix = '%s/v1.1/' % pub_hosts
+        self.apiv1 = '%s/v1' % pub_hosts
+        self.auth = '%s/auth/token' % auth_hosts
         pass
 
     """

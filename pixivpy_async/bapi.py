@@ -41,9 +41,8 @@ class BasePixivAPI(Net, Utils):
         headers = self.set_headers(headers, self.access_token)
         return await self.requests_call(method=method, url=url, headers=headers, params=params, data=data)
 
-    def set_api_proxy(self, proxy_hosts="http://app-api.pixivlite.com"):
-        """Set proxy hosts: eg pixivlite.com"""
-        self.api = API(proxy_hosts)
+    def set_api_proxy(self, **kwargs):
+        self.api = API(**kwargs)
 
     def set_auth(self, access_token, refresh_token=None):
         self.access_token = access_token
@@ -80,7 +79,7 @@ class BasePixivAPI(Net, Utils):
     async def login(self, username=None, password=None, refresh_token=None):
         """Login with password, or use the refresh_token to acquire a new bearer token"""
 
-        url = 'https://oauth.secure.pixiv.net/auth/token'
+        url = self.api.auth
         local_time = datetime.utcnow().strftime( '%Y-%m-%dT%H:%M:%S+00:00' )
         headers = {
             'User-Agent': 'PixivAndroidApp/5.0.64 (Android 6.0)',
