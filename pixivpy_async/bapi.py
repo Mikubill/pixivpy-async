@@ -1,6 +1,7 @@
 # -*- coding:utf-8 -*-
 import hashlib
 import os
+import re
 from datetime import datetime
 import aiofiles
 from .error import *
@@ -24,6 +25,13 @@ class BasePixivAPI(Net, Utils):
         self.user_id = 0
         self.refresh_token = None
         self.api = API()
+        self.content_type_mapping = {
+            'image/webp': '.webp',
+            'image/jpg': '.jpg',
+            'image/jpeg': '.jpg',
+            'image/png': '.png',
+            'image/gif': '.gif',
+        }
         super().__init__(**requests_kwargs)
 
     async def requests_(
@@ -80,7 +88,7 @@ class BasePixivAPI(Net, Utils):
         """Login with password, or use the refresh_token to acquire a new bearer token"""
 
         url = self.api.auth
-        local_time = datetime.utcnow().strftime( '%Y-%m-%dT%H:%M:%S+00:00' )
+        local_time = datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%S+00:00')
         headers = {
             'User-Agent': 'PixivAndroidApp/5.0.64 (Android 6.0)',
             'X-Client-Time': local_time,
@@ -124,7 +132,7 @@ class BasePixivAPI(Net, Utils):
 
         return token
 
-    async def download(self, url, prefix='', path=os.path.curdir, fname=None,
+    async def download(self, url, prefix='', path=os.path.curdir, fname=None, auto_ext=True,
                        name=None, replace=False, referer='https://app-api.pixiv.net/'):
         if fname is None and name is None:
             name = os.path.basename(url)
@@ -135,11 +143,17 @@ class BasePixivAPI(Net, Utils):
             if os.path.exists(img_path) and not replace:
                 return False
             else:
-                response = await self.down(url, referer)
+                response, type = await self.down(url, referer)
+                if auto_ext and type in self.content_type_mapping:
+                    _ext = re.findall(r'(\.\w+)$', img_path)[0]
+                    if _ext:
+                        img_path = img_path.replace(_ext, self.content_type_mapping[type])
+                    else:
+                        img_path += self.content_type_mapping[type]
                 async with aiofiles.open(img_path, mode='wb') as out_file:
                     await out_file.write(response)
         else:
-            response = await self.down(url, referer)
+            response, _ = await self.down(url, referer)
             fname.write(response)
         del response
         return True

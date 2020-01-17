@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import asyncio
+import uuid
 from pixivpy_async import *
 
 _USERNAME = "userbay"
@@ -19,11 +20,12 @@ async def _main(aapi):
     });
     ```
     """
-    aapi.set_api_proxy()
+    aapi.set_api_proxy(app_hosts="", auth_hosts="", pub_hosts="")
     await aapi.login(_USERNAME, _PASSWORD)
     result = await aapi.illust_ranking('day')
     for item in result.illusts:
-        print(">>> %s, origin url: %s" % (item.title, item.image_urls['large']))
+        print(item.image_urls['large'])
+        await aapi.download(item.image_urls['large'])
 
 
 def main():

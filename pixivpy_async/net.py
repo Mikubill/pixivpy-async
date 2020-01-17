@@ -20,11 +20,13 @@ class Net(object):
             async with aiohttp.ClientSession(timeout=aiohttp.ClientTimeout(total=10)) as session:
                 async with session.get(_url, headers={'Referer': _referer}, **self.requests_kwargs) as response:
                     c = await response.read()
+                    t = response.content_type
         else:
             async with self.session.get(_url, headers={'Referer': _referer}, **self.requests_kwargs) as response:
                 c = await response.read()
+                t = response.content_type
         await asyncio.sleep(0)
-        return c
+        return c, t
 
     @retry(asyncio.TimeoutError, aiohttp.ClientError, aiohttp.ServerTimeoutError,
            aiohttp.ServerConnectionError, aiohttp.ServerDisconnectedError,

@@ -1,7 +1,7 @@
 """
 Pixiv API library
 """
-__version__ = '1.2.6'
+__version__ = '1.2.7'
 
 from .aapi import AppPixivAPI
 from .papi import PixivAPI
