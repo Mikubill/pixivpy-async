@@ -59,7 +59,7 @@ aapi = AppPixivAPI()
 await papi.login(username, password)
 
 # For App Pixiv API
-await papi.login(username, password)
+await aapi.login(username, password)
 ```
 
 ## Doing stuff
