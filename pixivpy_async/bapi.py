@@ -145,9 +145,9 @@ class BasePixivAPI(Net, Utils):
             else:
                 response, type = await self.down(url, referer)
                 if auto_ext and type in self.content_type_mapping:
-                    _ext = re.findall(r'(\.\w+)$', img_path)[0]
-                    if _ext:
-                        img_path = img_path.replace(_ext, self.content_type_mapping[type])
+                    _ext = re.findall(r'(\.\w+)$', img_path)
+                    if _ext != []:
+                        img_path = img_path.replace(_ext[0], self.content_type_mapping[type])
                     else:
                         img_path += self.content_type_mapping[type]
                 async with aiofiles.open(img_path, mode='wb') as out_file:
