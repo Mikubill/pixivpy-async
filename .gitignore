@@ -15,6 +15,5 @@ MANIFEST
 example/
 demo_debug.py
 
-setup.py
 setup.cfg
 PixivPy_Async.egg-info/

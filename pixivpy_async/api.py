@@ -97,6 +97,14 @@ class API:
     def ugoira_metadata(self):
         return 'GET', '%s/ugoira/metadata' % self.appv1
 
+    @property
+    def search_user(self):
+        return 'GET', '%s/search/user' % self.appv1
+
+    @property
+    def search_novel(self):
+        return 'GET', '%s/search/novel' % self.appv1
+
     """
         Public API
     """

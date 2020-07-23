@@ -1,7 +1,6 @@
 # -*- coding:utf-8 -*-
 import json
-import re
-from urllib.parse import urlparse, unquote
+import urllib.parse as up
 
 
 class Utils:
@@ -35,22 +34,19 @@ class Utils:
                     result.update(
                         {key: value}
                     )
-                if isinstance(value, list) and 'sizes' not in key and 'ids' not in key and 'types' not in key:
-                    result.update(
-                        {'%s[]' % key: ','.join(map(str, value))}
-                    )
-                if isinstance(value, list) and 'ids' in key:
-                    result.update(
-                        {'%s[]' % key: ",".join([str(pid) for pid in value])}
-                    )
-                if isinstance(value, list) and 'sizes' in key:
-                    result.update(
-                        {'%s' % key: ','.join(map(str, value))}
-                    )
-                if isinstance(value, list) and 'types' in key:
-                    result.update(
-                        {'%s' % key: ','.join(map(str, value))}
-                    )
+                if isinstance(value, list):
+                    if key in ["sizes", "types"]:
+                        result.update(
+                            {'%s' % key: ','.join(map(str, value))}
+                        )
+                    elif key in "ids":
+                        result.update(
+                            {'%s[]' % key: ",".join([str(pid) for pid in value])}
+                        )
+                    else:
+                        result.update(
+                            {'%s[]' % key: ','.join(map(str, value))}
+                        )
                 if isinstance(value, bool):
                     result.update(
                         {key: str(value).lower()}
@@ -59,29 +55,20 @@ class Utils:
 
     @staticmethod
     def parse_json(_):
-        def _obj_hook(pairs):
-            o = JsonDict()
-            for k, v in pairs.items():
-                o[str(k)] = v
-            return o
-
-        return json.loads(json.dumps(_), object_hook=_obj_hook)
+        return json.loads(json.dumps(_), object_hook=JsonDict)
 
     @staticmethod
     def parse_qs(next_url):
         if not next_url:
             return None
+
         result_qs = {}
-        query = urlparse(next_url).query
-        for kv in query.split('&'):
-            k, v = map(lambda s: unquote(s), kv.split('='))
-            matched = re.match(r'(?P<key>[\w]*)\[(?P<idx>[\w]*)\]', k)
-            if matched:
-                mk = matched.group('key')
-                marray = result_qs.get(mk, [])
-                result_qs[mk] = marray + [v]
+        query = up.urlparse(next_url).query
+        for key, value in up.parse_qs(query).items():
+            if '[' in key and key.endswith(']'):
+                result_qs[key.split('[')[0]] = value
             else:
-                result_qs[k] = v
+                result_qs[key] = value[-1]
 
         return result_qs
 
@@ -90,10 +77,7 @@ class JsonDict(dict):
     """general json object that allows attributes to be bound to and also behaves like a dict"""
 
     def __getattr__(self, attr):
-        try:
-            return self[attr]
-        except KeyError:
-            raise AttributeError(r"'JsonDict' object has no attribute '%s'" % attr)
+        return self.get(attr)
 
     def __setattr__(self, attr, value):
         self[attr] = value

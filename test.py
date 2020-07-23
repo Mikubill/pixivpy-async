@@ -139,6 +139,13 @@ class TestMethods(unittest.TestCase):
         self.assertIsNotNone(aapi.illust_follow(req_auth=True))
         self.assertIsNotNone(aapi.illust_recommended(req_auth=True))
 
+    def test_bookmark_add(self):
+
+        illust_id = 74187223
+        tags = ['Fate/GO', '50000users入り', '私服']
+        self.assertIsNotNone(aapi.illust_bookmark_add(illust_id, tags=tags))
+        self.assertIsNotNone(aapi.illust_bookmark_detail(illust_id))
+
     def test_download(self):
 
         self.assertIsNotNone(aapi.illust_ranking('day', date='2016-08-01'))
@@ -205,12 +212,12 @@ class TestMethods(unittest.TestCase):
         self.assertIsNotNone(loop.run_until_complete(Net().post('https://httpbin.org/post', None, {'accept': 'application/json'}, None)))
         self.assertIsNotNone(loop.run_until_complete(Net().delete('https://httpbin.org/delete', {'accept': 'application/json'}, None)))
 
-    def test_async_gather(self):
-        c = time.time()
-#        print('Sync Func: %s s' % (c - t))
-        p = asyncio.gather(async_func())
-        loop = asyncio.get_event_loop()
-        loop.run_until_complete(p)
+    # def test_async_gather(self):
+        # c = time.time()
+        # print('Sync Func: %s s' % (c - t))
+        # p = asyncio.gather(async_func())
+        # loop = asyncio.get_event_loop()
+        # loop.run_until_complete(p)
 #        print('Async Func: %s s' % (time.time() - c))
 
 

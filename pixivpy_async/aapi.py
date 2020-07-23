@@ -12,6 +12,7 @@ class AppPixivAPI(BasePixivAPI):
         """
         super(AppPixivAPI, self).__init__(**requests_kwargs)
 
+    # 用户详情
     async def user_detail(
             self,
             user_id: int = 660788,
@@ -73,6 +74,8 @@ class AppPixivAPI(BasePixivAPI):
         )
         return await self.requests_(method=method, url=url, params=params, auth=req_auth)
 
+    # 用户作品列表
+    # type: ["illust", "manga"]
     async def user_illusts(
             self,
             user_id: int,
@@ -138,6 +141,8 @@ class AppPixivAPI(BasePixivAPI):
         )
         return await self.requests_(method=method, url=url, params=params, auth=req_auth)
 
+    # 用户收藏作品列表
+    # tag: 从 user_bookmark_tags_illust 获取的收藏标签
     async def user_bookmarks_illust(
             self,
             user_id: int,
@@ -211,6 +216,8 @@ class AppPixivAPI(BasePixivAPI):
         )
         return await self.requests_(method=method, url=url, params=params, auth=req_auth)
 
+    # 关注用户的新作
+    # restrict: ["public", "private"]
     async def illust_follow(
             self,
             restrict: str = 'public',
@@ -255,6 +262,7 @@ class AppPixivAPI(BasePixivAPI):
         )
         return await self.requests_(method=method, url=url, params=params, auth=req_auth)
 
+    # 相关作品列表
     async def illust_related(
             self,
             illust_id: int,
@@ -272,6 +280,8 @@ class AppPixivAPI(BasePixivAPI):
         )
         return await self.requests_(method=method, url=url, params=params, auth=req_auth)
 
+    # 插画推荐 (Home - Main)
+    # content_type: ["illust", "manga"]
     async def illust_recommended(
             self,
             content_type: str = 'illust',
@@ -302,6 +312,11 @@ class AppPixivAPI(BasePixivAPI):
         )
         return await self.requests_(method=method, url=url, params=params, auth=req_auth)
 
+    # 作品排行
+    # mode: [day, week, month, day_male, day_female, week_original, week_rookie, day_manga]
+    # date: '2016-08-01'
+    # mode (Past): [day, week, month, day_male, day_female, week_original, week_rookie,
+    #               day_r18, day_male_r18, day_female_r18, week_r18, week_r18g]
     async def illust_ranking(
             self,
             mode: str = 'day',
@@ -331,6 +346,14 @@ class AppPixivAPI(BasePixivAPI):
         )
         return await self.requests_(method=method, url=url, params=params, auth=req_auth)
 
+    # 搜索 (Search)
+    # search_target - 搜索类型
+    #   partial_match_for_tags  - 标签部分一致
+    #   exact_match_for_tags    - 标签完全一致
+    #   title_and_caption       - 标题说明文
+    # sort: [date_desc, date_asc]
+    # duration: [within_last_day, within_last_week, within_last_month]
+    # start_date, end_date: '2020-07-01'
     async def search_illust(
             self,
             word: str,
@@ -339,7 +362,9 @@ class AppPixivAPI(BasePixivAPI):
             duration: str = None,
             filter: str = 'for_ios',
             offset: int = None,
-            req_auth: bool = True
+            req_auth: bool = True,
+            start_date=None,
+            end_date=None,
     ):
         method, url = self.api.search_illust
         params = self.set_params(
@@ -348,10 +373,13 @@ class AppPixivAPI(BasePixivAPI):
             sort=sort,
             filter=filter,
             duration=duration,
-            offset=offset
+            offset=offset,
+            start_date=start_date,
+            end_date=end_date,
         )
         return await self.requests_(method=method, url=url, params=params, auth=req_auth)
 
+    # 作品收藏详情
     async def illust_bookmark_detail(
             self,
             illust_id: int,
@@ -379,6 +407,7 @@ class AppPixivAPI(BasePixivAPI):
         )
         return await self.requests_(method=method, url=url, data=data, auth=req_auth)
 
+    # 删除收藏
     async def illust_bookmark_delete(
             self,
             illust_id: int = None,
@@ -404,6 +433,7 @@ class AppPixivAPI(BasePixivAPI):
         )
         return await self.requests_(method=method, url=url, params=params, auth=req_auth)
 
+    # Following用户列表
     async def user_following(
             self,
             user_id: int,
@@ -420,6 +450,7 @@ class AppPixivAPI(BasePixivAPI):
 
         return await self.requests_(method=method, url=url, params=params, auth=req_auth)
 
+    # Followers用户列表
     async def user_follower(
             self,
             user_id: int,
@@ -436,6 +467,7 @@ class AppPixivAPI(BasePixivAPI):
 
         return await self.requests_(method=method, url=url, params=params, auth=req_auth)
 
+    # 好P友
     async def user_mypixiv(
             self,
             user_id: int,
@@ -450,6 +482,7 @@ class AppPixivAPI(BasePixivAPI):
 
         return await self.requests_(method=method, url=url, params=params, auth=req_auth)
 
+    # 黑名单用户
     async def user_list(
             self,
             user_id: int,
@@ -465,6 +498,7 @@ class AppPixivAPI(BasePixivAPI):
         )
         return await self.requests_(method=method, url=url, params=params, auth=req_auth)
 
+    # 获取ugoira信息
     async def ugoira_metadata(
             self,
             illust_id: int,
@@ -477,6 +511,62 @@ class AppPixivAPI(BasePixivAPI):
 
         return await self.requests_(method=method, url=url, params=params, auth=req_auth)
 
+    async def search_user(
+            self,
+            word,
+            sort='date_desc',
+            duration=None,
+            filter='for_ios',
+            offset=None,
+            req_auth=True
+    ):
+        method, url = self.api.search_user
+        params = self.set_params(
+            word=word,
+            sort=sort,
+            filter=filter,
+            duration=duration,
+            offset=offset
+        )
+
+        return await self.requests_(method=method, url=url, params=params, auth=req_auth)
+
+    # 搜索小说 (Search Novel)
+    # search_target - 搜索类型
+    #   partial_match_for_tags  - 标签部分一致
+    #   exact_match_for_tags    - 标签完全一致
+    #   text                    - 正文
+    #   keyword                 - 关键词
+    # sort: [date_desc, date_asc]
+    # start_date/end_date: 2020-06-01
+    async def search_novel(
+            self,
+            word,
+            search_target='partial_match_for_tags',
+            sort='date_desc',
+            merge_plain_keyword_results='true',
+            include_translated_tag_results='true',
+            start_date=None,
+            end_date=None,
+            filter=None,
+            offset=None,
+            req_auth=True
+    ):
+        method, url = self.api.search_novel
+        params = self.set_params(
+            word=word,
+            sort=sort,
+            filter=filter,
+            search_target=search_target,
+            merge_plain_keyword_results=merge_plain_keyword_results,
+            include_translated_tag_results=include_translated_tag_results,
+            start_date=start_date,
+            end_date=end_date,
+            offset=offset
+        )
+        return await self.requests_(method=method, url=url, params=params, auth=req_auth)
+
+    # 特辑详情 (无需登录，调用Web API)
     async def showcase_article(
             self,
             showcase_id: int,
