@@ -365,6 +365,8 @@ class AppPixivAPI(BasePixivAPI):
             req_auth: bool = True,
             start_date=None,
             end_date=None,
+            min_bookmarks=None,
+            max_bookmarks=None
     ):
         method, url = self.api.search_illust
         params = self.set_params(
@@ -376,6 +378,8 @@ class AppPixivAPI(BasePixivAPI):
             offset=offset,
             start_date=start_date,
             end_date=end_date,
+            bookmark_num_min=min_bookmarks,
+            bookmark_num_max=max_bookmarks,
         )
         return await self.requests_(method=method, url=url, params=params, auth=req_auth)
 
