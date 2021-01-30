@@ -1,6 +1,6 @@
 import asyncio
 import aiohttp
-from aiohttp_socks import ProxyType, ProxyConnector, ChainProxyConnector
+from aiohttp_socks import ProxyConnector
 
 
 class PixivClient:
@@ -15,29 +15,12 @@ class PixivClient:
             proxy <str> is used for a single proxy with a url:
                 'socks5://user:password@127.0.0.1:1080'
 
-            proxy <dict> is used for a single proxy with a dict:
-                proxy_dict = {
-                    'proxy_type': ProxyType.SOCKS5,
-                    'host': '127.0.0.1',
-                    'port': 1080,
-                    'rdns': True
-                }
-
-            proxy <list> is used for proxy chaining with a list of urls:
-                [
-                    'socks5://user:password@127.0.0.1:1080',
-                    'socks4://127.0.0.1:1081',
-                    'http://user:password@127.0.0.1:3128',
-                ]
+            If you want to use proxy chaining, read https://github.com/romis2012/aiohttp-socks.
 
         """
 
-        if isinstance(proxy, str):
+        if proxy:
             self.conn = ProxyConnector.from_url(proxy, limit_per_host=limit)
-        elif isinstance(proxy, dict):
-            self.conn = ProxyConnector(**proxy, limit_per_host=limit)
-        elif isinstance(proxy, list):
-            self.conn = ChainProxyConnector.from_urls(proxy, limit_per_host=limit)
         else:
             self.conn = aiohttp.TCPConnector(limit_per_host=limit)
 
