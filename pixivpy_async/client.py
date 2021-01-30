@@ -32,13 +32,13 @@ class PixivClient:
 
         """
 
-        if type(proxy) is str:
+        if isinstance(proxy, str):
             self.conn = ProxyConnector.from_url(proxy, limit_per_host=limit)
-        if type(proxy) is dict:
+        elif isinstance(proxy, dict):
             self.conn = ProxyConnector(**proxy, limit_per_host=limit)
-        if type(proxy) is list:
+        elif isinstance(proxy, list):
             self.conn = ChainProxyConnector.from_urls(proxy, limit_per_host=limit)
-        if not proxy:
+        else:
             self.conn = aiohttp.TCPConnector(limit_per_host=limit)
 
         self.internal = internal
