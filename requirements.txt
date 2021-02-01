@@ -1,2 +1,3 @@
 aiohttp[speedups]
 aiofiles
+aiohttp-socks

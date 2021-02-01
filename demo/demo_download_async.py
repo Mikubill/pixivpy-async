@@ -6,7 +6,7 @@ import os
 from pixivpy_async import AppPixivAPI
 
 _USERNAME = "userbay"
-_PASSWORD = "userpay"
+_PASSWORD = "UserPay"
 
 
 async def _main(aapi):

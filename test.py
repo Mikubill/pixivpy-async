@@ -14,7 +14,7 @@ from pixivpy_async.sync import *
 sys.dont_write_bytecode = True
 
 _USERNAME = "userbay"
-_PASSWORD = "userpay"
+_PASSWORD = "UserPay"
 
 aapi = AppPixivAPI()
 papi = PixivAPI()
