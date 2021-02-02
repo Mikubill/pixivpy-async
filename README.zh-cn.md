@@ -1,7 +1,7 @@
 PixivPy-Async 
 ======
 
-[![Build Status](https://travis-ci.org/Mikubill/pixivpy-async.svg)](https://travis-ci.org/Mikubill/pixivpy-async) [![PyPI version](https://badge.fury.io/py/PixivPy-Async.svg)](https://badge.fury.io/py/PixivPy-Async) [![codecov](https://codecov.io/gh/Mikubill/pixivpy-async/branch/master/graph/badge.svg)](https://codecov.io/gh/Mikubill/pixivpy-async)
+[![PyPI version](https://badge.fury.io/py/PixivPy-Async.svg)](https://badge.fury.io/py/PixivPy-Async)
 
 _适用于Python 3的Async Pixiv API（支持Auth）_
 
@@ -10,6 +10,11 @@ _原地址: https://github.com/Mikubill/pixivpy-async_
 _基于PixivPy: https://github.com/upbit/pixivpy_
 
 [English Version](https://github.com/Mikubill/pixivpy-async)
+
+## 注意
+
+* 你可能需要使用日本IP（无论原生）来访问 Pixiv API，如使用其他地区IP可能会遇到Cloudflare验证。
+* Pixiv API的频率限制较为严格，请求时请适当加入等待时间
 
 ## 安装
 
@@ -50,6 +55,30 @@ await client.close()
 papi = PixivAPI()
 aapi = AppPixivAPI()
 ```
+
+## 代理说明
+
+Pixivpy-Async支持多种代理模式，均需在Init时指定。
+
+默认为不使用任何代理（忽略环境变量）。
+
+使用环境变量，由aiohttp自动识别（暂不支持socks5）
+
+```python
+...PixivClient(env=True)
+...PixivAPI(env=True)
+...AppPixivAPI(env=True)
+```
+
+指定代理地址，支持socks5/socks4/http（不支持https）
+
+```python
+...PixivClient(proxy="socks5://127.0.0.1:8080")
+...PixivAPI(proxy="socks5://127.0.0.1:8080")
+...AppPixivAPI(proxy="socks5://127.0.0.1:8080")
+```
+
+注意，指定了proxy后env会被忽略。
 
 ## 登录
 

@@ -1,7 +1,7 @@
 PixivPy-Async 
 ======
 
-[![Build Status](https://travis-ci.org/Mikubill/pixivpy-async.svg)](https://travis-ci.org/Mikubill/pixivpy-async) [![PyPI version](https://badge.fury.io/py/PixivPy-Async.svg)](https://badge.fury.io/py/PixivPy-Async) [![codecov](https://codecov.io/gh/Mikubill/pixivpy-async/branch/master/graph/badge.svg)](https://codecov.io/gh/Mikubill/pixivpy-async)
+[![PyPI version](https://badge.fury.io/py/PixivPy-Async.svg)](https://badge.fury.io/py/PixivPy-Async) 
 
 _Async Pixiv API for Python 3(with Auth supported)_
 
@@ -12,6 +12,11 @@ _Source: https://github.com/Mikubill/pixivpy-async_
 _Based on PixivPy: https://github.com/upbit/pixivpy_
 
 [中文说明](https://github.com/Mikubill/pixivpy-async/blob/master/README.zh-cn.md)
+
+## Note
+
+* You may need to use a Japanese IP (no matter native) to access the Pixiv API. IP from other regions may encounter Cloudflare verification.
+* Pixiv API has a strict policy on access frequency. Recommended to add some waiting time when requesting
 
 ## Install
 
@@ -51,6 +56,28 @@ await client.close()
 papi = PixivAPI()
 aapi = AppPixivAPI()
 ```
+
+## Proxy
+
+The default is not to use any proxy (ignoring environment variables).
+
+Use environment variables, automatically recognized by aiohttp (not support socks5)
+
+```python
+...PixivClient(env=True)
+...PixivAPI(env=True)
+...AppPixivAPI(env=True)
+```
+
+Specify the proxy address, support socks5/socks4/http (not support https)
+
+```python
+...PixivClient(proxy="socks5://127.0.0.1:8080")
+...PixivAPI(proxy="socks5://127.0.0.1:8080")
+...AppPixivAPI(proxy="socks5://127.0.0.1:8080")
+```
+
+Note that env will be ignored when a proxy is specified.
 
 ## Login
 
