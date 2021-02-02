@@ -12,7 +12,7 @@ from pixivpy3 import PixivAPI as Sync_papi
 sys.dont_write_bytecode = True
 
 _USERNAME = "userbay"
-_PASSWORD = "userpay"
+_PASSWORD = "UserPay"
 
 saapi = Sync_aapi()
 saapi.login(_USERNAME, _PASSWORD)

@@ -5,7 +5,7 @@ from pixivpy_async import AppPixivAPI, PixivClient
 from pixivpy_async.sync import AppPixivAPI as SAAPI
 
 _USERNAME = 'userbay'
-_PASSWORD = 'userpay'
+_PASSWORD = 'UserPay'
 
 
 def test0():

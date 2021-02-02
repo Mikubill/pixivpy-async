@@ -8,7 +8,7 @@ from pixivpy_async import AppPixivAPI
 sys.dont_write_bytecode = True
 
 _USERNAME = "userbay"
-_PASSWORD = "userpay"
+_PASSWORD = "UserPay"
 
 
 async def appapi_auth_api(aapi):
