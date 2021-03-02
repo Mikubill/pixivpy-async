@@ -86,6 +86,14 @@ class API:
         return 'GET', '%s/user/follower' % self.appv1
 
     @property
+    def user_follow_add(self):
+        return 'GET', '%s/user/follow/add' % self.appv1
+
+    @property
+    def user_follow_del(self):
+        return 'GET', '%s/user/follow/add' % self.appv1
+
+    @property
     def user_mypixiv(self):
         return 'GET', '%s/user/mypixiv' % self.appv1
 

@@ -9,7 +9,7 @@ sys.dont_write_bytecode = True
 
 _USERNAME = "userbay"
 _PASSWORD = "UserPay"
-
+_TOKEN = "uXooTT7xz9v4mflnZqJUO7po9W5ciouhKrIDnI2Dv3c"
 
 async def papi_ranking(api):
     # PAPI.ranking
@@ -43,7 +43,8 @@ async def papi_others(api):
 
 
 async def _login(papi):
-    await papi.login(_USERNAME, _PASSWORD)
+    # await aapi.login(_USERNAME, _PASSWORD)
+    await papi.login(refresh_token=_TOKEN)
 
 
 async def _main(papi):

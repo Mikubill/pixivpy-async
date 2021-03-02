@@ -9,7 +9,7 @@ sys.dont_write_bytecode = True
 
 _USERNAME = "userbay"
 _PASSWORD = "UserPay"
-
+_TOKEN = "uXooTT7xz9v4mflnZqJUO7po9W5ciouhKrIDnI2Dv3c"
 
 async def appapi_users(aapi):
     json_result = await aapi.user_detail(275527)
@@ -53,7 +53,8 @@ async def appapi_users(aapi):
 
 
 async def _login(aapi):
-    await aapi.login(_USERNAME, _PASSWORD)
+    # await aapi.login(_USERNAME, _PASSWORD)
+    await aapi.login(refresh_token=_TOKEN)
 
 
 async def _main(aapi):

@@ -9,7 +9,7 @@ sys.dont_write_bytecode = True
 
 _USERNAME = "userbay"
 _PASSWORD = "UserPay"
-
+_TOKEN = "uXooTT7xz9v4mflnZqJUO7po9W5ciouhKrIDnI2Dv3c"
 
 async def papi_me(api):
     # PAPI.me_feeds
@@ -32,7 +32,8 @@ async def papi_me(api):
 
 
 async def _login(aapi):
-    await aapi.login(_USERNAME, _PASSWORD)
+    # await aapi.login(_USERNAME, _PASSWORD)
+    await aapi.login(refresh_token=_TOKEN)
 
 
 async def _main(aapi):

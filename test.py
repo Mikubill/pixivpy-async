@@ -15,11 +15,12 @@ sys.dont_write_bytecode = True
 
 _USERNAME = "userbay"
 _PASSWORD = "UserPay"
+_TOKEN = "uXooTT7xz9v4mflnZqJUO7po9W5ciouhKrIDnI2Dv3c"
 
 aapi = AppPixivAPI()
 papi = PixivAPI()
-aapi.login(_USERNAME, _PASSWORD)
-papi.login(_USERNAME, _PASSWORD)
+papi.login(refresh_token=_TOKEN)
+aapi.login(refresh_token=_TOKEN)
 t = time.time()
 
 
@@ -30,7 +31,8 @@ async def async_func():
 
     async with PixivClient() as client:
         aapid = apapi(client=client)
-        await aapid.login( username=_USERNAME, password=_PASSWORD)
+        await aapid.login(refresh_token=_TOKEN)
+        # await aapid.login( username=_USERNAME, password=_PASSWORD)
         await aapid.illust_detail(59580629)
         await aapid.illust_comments(59580629)
         await aapid.ugoira_metadata(51815717)
@@ -41,6 +43,8 @@ async def async_func():
         await aapid.user_bookmarks_illust(2088434)
         await aapid.user_following(7314824)
         await aapid.user_follower(275527)
+        await aapid.user_follow_add(24687177)
+        await aapid.user_follow_del(24687177)
         await aapid.user_mypixiv(275527)
         await aapid.trending_tags_illust()
         await aapid.illust_ranking('day_male')
@@ -70,7 +74,8 @@ class TestMethods(unittest.TestCase):
     def test_login(self):
         newaapi = AppPixivAPI()
         # newpapi = PixivAPI()
-        self.assertIsNotNone(newaapi.login(_USERNAME, _PASSWORD))
+        # self.assertIsNotNone(newaapi.login(_USERNAME, _PASSWORD))
+        self.assertIsNotNone(newaapi.login(refresh_token=_TOKEN))
         # self.assertIsNotNone(newpapi.login(_USERNAME, _PASSWORD))
 
     def test_illust_0(self):
@@ -192,9 +197,10 @@ class TestMethods(unittest.TestCase):
     #     aapi.set_api_proxy("http://app-api.pixivlite.com")
     #     self.assertIsNotNone(aapi.illust_ranking('day'))
 
-    def test_deep_deep(self):
+    def test_others(self):
         newaapi0 = AppPixivAPI()
-        self.assertIsNotNone(newaapi0.login(_USERNAME, _PASSWORD))
+        # self.assertIsNotNone(newaapi0.login(_USERNAME, _PASSWORD))
+        self.assertIsNotNone(newaapi0.login(refresh_token=_TOKEN))
         newaapi = AppPixivAPI()
         self.assertRaises(error.NoLoginError, newaapi.login, None)
         newaapi2 = AppPixivAPI()

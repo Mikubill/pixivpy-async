@@ -6,7 +6,7 @@ from pixivpy_async import *
 
 _USERNAME = "userbay"
 _PASSWORD = "UserPay"
-
+_TOKEN = "uXooTT7xz9v4mflnZqJUO7po9W5ciouhKrIDnI2Dv3c"
 
 async def _main(aapi):
     """
@@ -21,7 +21,8 @@ async def _main(aapi):
     ```
     """
     aapi.set_api_proxy(app_hosts="", auth_hosts="", pub_hosts="")
-    await aapi.login(_USERNAME, _PASSWORD)
+    # await aapi.login(_USERNAME, _PASSWORD)
+    await aapi.login(refresh_token=_TOKEN)
     result = await aapi.illust_ranking('day')
     for item in result.illusts:
         print(item.image_urls['large'])

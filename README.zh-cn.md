@@ -85,9 +85,13 @@ Pixivpy-Async支持多种代理模式，均需在Init时指定。
 ```python
 # For Public Pixiv API
 await papi.login(username, password)
+# Or
+await papi.login(refresh_token=TOKEN)
 
 # For App Pixiv API
 await aapi.login(username, password)
+# Or
+await aapi.login(refresh_token=TOKEN)
 ```
 
 ## 尽情地使用

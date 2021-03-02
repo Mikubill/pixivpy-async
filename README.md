@@ -84,9 +84,13 @@ Note that env will be ignored when a proxy is specified.
 ```python
 # For Public Pixiv API
 await papi.login(username, password)
+# Or
+await papi.login(refresh_token=TOKEN)
 
 # For App Pixiv API
 await aapi.login(username, password)
+# Or
+await aapi.login(refresh_token=TOKEN)
 ```
 
 ## Doing stuff

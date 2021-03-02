@@ -423,6 +423,32 @@ class AppPixivAPI(BasePixivAPI):
         )
         return await self.requests_(method=method, url=url, data=data, auth=req_auth)
 
+    # 关注用户
+    async def user_follow_add(
+            self,
+            user_id: int,
+            restrict='public',
+            req_auth: bool = True
+    ):
+        method, url = self.api.user_follow_add
+        data = self.set_params(
+            user_id=user_id,
+            restrict=restrict
+        )
+        return await self.requests_(method=method, url=url, data=data, auth=req_auth)
+
+    # 取消关注用户
+    async def user_follow_del(
+            self,
+            user_id: int,
+            req_auth: bool = True
+    ):
+        method, url = self.api.user_follow_del
+        data = self.set_params(
+            user_id=user_id,
+        )
+        return await self.requests_(method=method, url=url, data=data, auth=req_auth)
+
     # 用户收藏标签列表
     async def user_bookmark_tags_illust(
             self,

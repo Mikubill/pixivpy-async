@@ -7,14 +7,14 @@ from datetime import *
 # change _USERNAME,_PASSWORD first!
 _USERNAME = "userbay"
 _PASSWORD = "UserPay"
-
+_TOKEN = "uXooTT7xz9v4mflnZqJUO7po9W5ciouhKrIDnI2Dv3c"
 
 def main():
     aapi = AppPixivAPI()
     # aapi.set_additional_headers({'Accept-Language':'en-US'})
     aapi.set_accept_language('en-us') # zh-cn
 
-    aapi.login(_USERNAME, _PASSWORD)
+    aapi.login(refresh_token=_TOKEN)
     json_result = aapi.illust_ranking('day', date=(datetime.now() - timedelta(days=5)).strftime('%Y-%m-%d'))
 
     print("Printing image titles and tags with English tag translations present when available")

@@ -13,11 +13,14 @@ sys.dont_write_bytecode = True
 
 _USERNAME = "userbay"
 _PASSWORD = "UserPay"
+_TOKEN = "uXooTT7xz9v4mflnZqJUO7po9W5ciouhKrIDnI2Dv3c"
 
 saapi = Sync_aapi()
-saapi.login(_USERNAME, _PASSWORD)
+# saapi.login(_USERNAME, _PASSWORD)
+saapi.login(refresh_token=_TOKEN)
 spapi = Sync_papi()
-spapi.login(_USERNAME, _PASSWORD)
+# spapi.login(_USERNAME, _PASSWORD)
+spapi.login(refresh_token=_TOKEN)
 
 
 def gen_date():
@@ -48,8 +51,10 @@ async def _test_async_illust(num):
     async with PixivClient() as client:
         aapi = AppPixivAPI(client=client)
         papi = PixivAPI(client=client)
-        await aapi.login(_USERNAME, _PASSWORD)
-        await papi.login(_USERNAME, _PASSWORD)
+        # await aapi.login(_USERNAME, _PASSWORD)
+        # await papi.login(_USERNAME, _PASSWORD)
+        await papi.login(refresh_token=_TOKEN)
+        await aapi.login(refresh_token=_TOKEN)
         tasks = [asyncio.ensure_future(illust(aapi, i)) for i in range(num)]
         await asyncio.wait(tasks)
 
@@ -84,8 +89,10 @@ async def _test_async_illust_detail(num):
     async with PixivClient() as client:
         aapi = AppPixivAPI(client=client)
         papi = PixivAPI(client=client)
-        await aapi.login(_USERNAME, _PASSWORD)
-        await papi.login(_USERNAME, _PASSWORD)
+        await papi.login(refresh_token=_TOKEN)
+        await aapi.login(refresh_token=_TOKEN)
+        # await aapi.login(_USERNAME, _PASSWORD)
+        # await papi.login(_USERNAME, _PASSWORD)
         tasks = [asyncio.ensure_future(illust_detail(aapi, i)) for i in range(num)]
         await asyncio.wait(tasks)
 
@@ -120,8 +127,10 @@ async def _test_async_user_illusts(num):
     async with PixivClient() as client:
         aapi = AppPixivAPI(client=client)
         papi = PixivAPI(client=client)
-        await aapi.login(_USERNAME, _PASSWORD)
-        await papi.login(_USERNAME, _PASSWORD)
+        await papi.login(refresh_token=_TOKEN)
+        await aapi.login(refresh_token=_TOKEN)
+        # await aapi.login(_USERNAME, _PASSWORD)
+        # await papi.login(_USERNAME, _PASSWORD)
         tasks = [asyncio.ensure_future(user_illusts(aapi, i)) for i in range(num)]
         await asyncio.wait(tasks)
 
@@ -156,8 +165,10 @@ async def _test_async_user_detail(num):
     async with PixivClient() as client:
         aapi = AppPixivAPI(client=client)
         papi = PixivAPI(client=client)
-        await aapi.login(_USERNAME, _PASSWORD)
-        await papi.login(_USERNAME, _PASSWORD)
+        await papi.login(refresh_token=_TOKEN)
+        await aapi.login(refresh_token=_TOKEN)
+        # await aapi.login(_USERNAME, _PASSWORD)
+        # await papi.login(_USERNAME, _PASSWORD)
         tasks = [asyncio.ensure_future(user_detail(aapi, i)) for i in range(num)]
         await asyncio.wait(tasks)
 
@@ -192,8 +203,10 @@ async def _test_async_ugoira_metadata(num):
     async with PixivClient() as client:
         aapi = AppPixivAPI(client=client)
         papi = PixivAPI(client=client)
-        await aapi.login(_USERNAME, _PASSWORD)
-        await papi.login(_USERNAME, _PASSWORD)
+        await papi.login(refresh_token=_TOKEN)
+        await aapi.login(refresh_token=_TOKEN)
+        # await aapi.login(_USERNAME, _PASSWORD)
+        # await papi.login(_USERNAME, _PASSWORD)
         tasks = [asyncio.ensure_future(ugoira_metadata(aapi, i)) for i in range(num)]
         await asyncio.wait(tasks)
 
@@ -228,8 +241,10 @@ async def _test_async_works(num):
     async with PixivClient() as client:
         aapi = AppPixivAPI(client=client)
         papi = PixivAPI(client=client)
-        await aapi.login(_USERNAME, _PASSWORD)
-        await papi.login(_USERNAME, _PASSWORD)
+        await papi.login(refresh_token=_TOKEN)
+        await aapi.login(refresh_token=_TOKEN)
+        # await aapi.login(_USERNAME, _PASSWORD)
+        # await papi.login(_USERNAME, _PASSWORD)
         tasks = [asyncio.ensure_future(works(papi, i)) for i in range(num)]
         await asyncio.wait(tasks)
 
@@ -264,8 +279,10 @@ async def _test_async_me_following_works(num):
     async with PixivClient() as client:
         aapi = AppPixivAPI(client=client)
         papi = PixivAPI(client=client)
-        await aapi.login(_USERNAME, _PASSWORD)
-        await papi.login(_USERNAME, _PASSWORD)
+        await papi.login(refresh_token=_TOKEN)
+        await aapi.login(refresh_token=_TOKEN)
+        # await aapi.login(_USERNAME, _PASSWORD)
+        # await papi.login(_USERNAME, _PASSWORD)
         tasks = [asyncio.ensure_future(me_following_works(papi, i)) for i in range(num)]
         await asyncio.wait(tasks)
 
@@ -300,8 +317,10 @@ async def _test_async_ranking(num):
     async with PixivClient() as client:
         aapi = AppPixivAPI(client=client)
         papi = PixivAPI(client=client)
-        await aapi.login(_USERNAME, _PASSWORD)
-        await papi.login(_USERNAME, _PASSWORD)
+        await papi.login(refresh_token=_TOKEN)
+        await aapi.login(refresh_token=_TOKEN)
+        # await aapi.login(_USERNAME, _PASSWORD)
+        # await papi.login(_USERNAME, _PASSWORD)
         tasks = [asyncio.ensure_future(ranking(papi, i)) for i in range(num)]
         await asyncio.wait(tasks)
 
@@ -336,8 +355,10 @@ async def _test_async_latest_works(num):
     async with PixivClient() as client:
         aapi = AppPixivAPI(client=client)
         papi = PixivAPI(client=client)
-        await aapi.login(_USERNAME, _PASSWORD)
-        await papi.login(_USERNAME, _PASSWORD)
+        await papi.login(refresh_token=_TOKEN)
+        await aapi.login(refresh_token=_TOKEN)
+        # await aapi.login(_USERNAME, _PASSWORD)
+        # await papi.login(_USERNAME, _PASSWORD)
         tasks = [asyncio.ensure_future(latest_works(papi, i)) for i in range(num)]
         await asyncio.wait(tasks)
 

@@ -7,10 +7,11 @@ from pixivpy_async import AppPixivAPI
 
 _USERNAME = "userbay"
 _PASSWORD = "UserPay"
-
+_TOKEN = "uXooTT7xz9v4mflnZqJUO7po9W5ciouhKrIDnI2Dv3c"
 
 async def _main(aapi):
-    await aapi.login(_USERNAME, _PASSWORD)
+    # await aapi.login(_USERNAME, _PASSWORD)
+    await aapi.login(refresh_token=_TOKEN)
     json_result = await aapi.illust_ranking('day', date='2019-08-01')
 
     directory = "dl"
