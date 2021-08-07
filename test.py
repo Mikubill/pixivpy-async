@@ -17,8 +17,8 @@ _USERNAME = "userbay"
 _PASSWORD = "UserPay"
 _TOKEN = "uXooTT7xz9v4mflnZqJUO7po9W5ciouhKrIDnI2Dv3c"
 
-aapi = AppPixivAPI()
-papi = PixivAPI()
+aapi = AppPixivAPI(bypass=True)
+papi = PixivAPI(bypass=True)
 papi.login(refresh_token=_TOKEN)
 aapi.login(refresh_token=_TOKEN)
 t = time.time()
@@ -30,7 +30,7 @@ async def async_func():
     from pixivpy_async import PixivAPI as ppapi
 
     async with PixivClient() as client:
-        aapid = apapi(client=client)
+        aapid = apapi(client=client,bypass=True)
         await aapid.login(refresh_token=_TOKEN)
         # await aapid.login( username=_USERNAME, password=_PASSWORD)
         await aapid.illust_detail(59580629)
@@ -72,7 +72,7 @@ async def async_func():
 
 class TestMethods(unittest.TestCase):
     def test_login(self):
-        newaapi = AppPixivAPI()
+        newaapi = AppPixivAPI(bypass=True)
         # newpapi = PixivAPI()
         # self.assertIsNotNone(newaapi.login(_USERNAME, _PASSWORD))
         self.assertIsNotNone(newaapi.login(refresh_token=_TOKEN))

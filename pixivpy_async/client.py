@@ -1,10 +1,11 @@
 import asyncio
 import aiohttp
 from aiohttp_socks import ProxyConnector
+from .bypass_sni import get_bypass_client
 
 
 class PixivClient:
-    def __init__(self, limit=30, timeout=10, env=False, internal=False, proxy=None):
+    def __init__(self, limit=30, timeout=10, env=False, internal=False, proxy=None, bypass=False):
         """
             When 'env' is True and 'proxy' is None, possible proxies will be
             obtained automatically (wrong proxy may be obtained).
@@ -18,18 +19,19 @@ class PixivClient:
             If you want to use proxy chaining, read https://github.com/romis2012/aiohttp-socks.
 
         """
-
-        if proxy:
-            self.conn = ProxyConnector.from_url(proxy, limit_per_host=limit)
-        else:
-            self.conn = aiohttp.TCPConnector(limit_per_host=limit)
-
         self.internal = internal
-        self.client = aiohttp.ClientSession(
-            connector=self.conn,
-            timeout=aiohttp.ClientTimeout(total=timeout),
-            trust_env=env,
-        )
+        if bypass:
+            self.client = get_bypass_client()
+        else:
+            if proxy:
+                self.conn = ProxyConnector.from_url(proxy, limit_per_host=limit)
+            else:
+                self.conn = aiohttp.TCPConnector(limit_per_host=limit)
+            self.client = aiohttp.ClientSession(
+                connector=self.conn,
+                timeout=aiohttp.ClientTimeout(total=timeout),
+                trust_env=env,
+            )
 
     def start(self):
         return self.client

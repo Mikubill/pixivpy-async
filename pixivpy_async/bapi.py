@@ -16,7 +16,7 @@ except NameError:
 
 
 class BasePixivAPI(Net, Utils):
-    def __init__(self, **requests_kwargs):
+    def __init__(self, bypass, **requests_kwargs):
         self.additional_headers = {}
         self.client_id = 'MOBrBDS8blbauoSck0ZfDbtuzpyT'
         self.client_secret = 'lsACyCD94FhDUtGTXi3QzcFE2uU1hqtDaKeqrdwj'
@@ -32,7 +32,7 @@ class BasePixivAPI(Net, Utils):
             'image/png': '.png',
             'image/gif': '.gif',
         }
-        super().__init__(**requests_kwargs)
+        super().__init__(bypass=bypass, **requests_kwargs)
 
     async def requests_(
             self,
