@@ -8,6 +8,7 @@ import aiohttp
 import re
 
 from aiohttp.abc import AbstractResolver
+from aiohttp import ClientTimeout
 
 
 class ByPassResolver(AbstractResolver):
@@ -34,6 +35,20 @@ class ByPassResolver(AbstractResolver):
     async def close(self) -> None:
         pass
 
+    async def fetch(self, client_session: aiohttp.ClientSession, url: str, params, timeout) -> list:
+        async with client_session.get(url, params=params, timeout=timeout) as rsp:
+            response = await rsp.text()
+            obj = json.loads(response)
+            pattern = re.compile(
+                "((\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.){3}(1\d\d|2[0-4]\d|25[0-5]|[1-9]\d|\d)")
+            result = []
+            for i in obj["Answer"]:
+                ip = i["data"]
+
+                if pattern.match(ip) is not None:
+                    result.append(ip)
+            return result
+
     async def require_appapi_hosts(self, hostname, timeout=3) -> List[str]:
         """
         通过 Cloudflare 的 DNS over HTTPS 请求真实的 IP 地址。
@@ -53,24 +68,14 @@ class ByPassResolver(AbstractResolver):
             "cd": "false",
         }
 
-        for url in URLS:
-            try:
-                async with aiohttp.ClientSession() as session:
-                    async with session.get(url, params=params, timeout=timeout) as rsp:
-                        response = await rsp.text()
-                        obj = json.loads(response)
-                        pattern = re.compile(
-                            "((\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.){3}(1\d\d|2[0-4]\d|25[0-5]|[1-9]\d|\d)")
-                        result = []
-                        for i in obj["Answer"]:
-                            ip = i["data"]
+        async with aiohttp.ClientSession() as session:
+            results = await asyncio.gather(
+                *(asyncio.create_task(self.fetch(session, url, params, ClientTimeout(total=timeout))) for url in URLS),
+                return_exceptions=True)
 
-                            if pattern.match(ip) is not None:
-                                result.append(ip)
-                        return result
-            except Exception as e:
-                pass
-        raise Exception("DNS lookup failed")
+        for r in results:
+            if not isinstance(r, Exception):
+                return r
 
 
 RESOLVER = ByPassResolver()
