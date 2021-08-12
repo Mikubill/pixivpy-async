@@ -22,6 +22,6 @@ setuptools.setup(
     ],
     keywords=['pixiv', 'api', 'pixivpy', 'pixivpy_async'],
     packages=['pixivpy_async'],
-    install_requires=['aiohttp[speedups]', 'aiofiles'],
+    install_requires=['aiohttp[speedups]', 'aiofiles', 'aiohttp_socks'],
     python_requires='>=3.5.3',
 )

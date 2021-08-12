@@ -26,6 +26,10 @@ class API:
         return 'GET', '%s/user/bookmarks/illust' % self.appv1
 
     @property
+    def user_related(self):
+        return 'GET', '%s/user/related' % self.appv1
+
+    @property
     def illust_follow(self):
         return 'GET', '%s/illust/follow' % self.appv2
 
@@ -91,7 +95,7 @@ class API:
 
     @property
     def user_follow_del(self):
-        return 'GET', '%s/user/follow/add' % self.appv1
+        return 'GET', '%s/user/follow/delete' % self.appv1
 
     @property
     def user_mypixiv(self):
@@ -112,6 +116,22 @@ class API:
     @property
     def search_novel(self):
         return 'GET', '%s/search/novel' % self.appv1
+
+    @property
+    def user_novels(self):
+        return 'GET', '%s/user/novels' % self.appv1
+
+    @property
+    def novel_series(self):
+        return 'GET', '%s/novel/series' % self.appv2
+
+    @property
+    def novel_detail(self):
+        return 'GET', '%s/novel/detail' % self.appv2
+
+    @property
+    def novel_text(self):
+        return 'GET', '%s/novel/text' % self.appv1
 
     """
         Public API
