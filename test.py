@@ -15,7 +15,7 @@ sys.dont_write_bytecode = True
 
 _USERNAME = "userbay"
 _PASSWORD = "UserPay"
-_TOKEN = "uXooTT7xz9v4mflnZqJUO7po9W5ciouhKrIDnI2Dv3c"
+_TOKEN = "0zeYA-PllRYp1tfrsq_w3vHGU1rPy237JMf5oDt73c4"
 
 aapi = AppPixivAPI()
 papi = PixivAPI()

@@ -290,10 +290,11 @@ class AppPixivAPI(BasePixivAPI):
             max_bookmark_id_for_recommend: int = None,
             min_bookmark_id_for_recent_illust: int = None,
             offset: int = None,
-            include_ranking_illusts=None,
+            include_ranking_illusts = None,
             bookmark_illust_ids: list = None,
             include_privacy_policy=None,
-            req_auth: bool = True
+            req_auth: bool = True,
+            viewed: [int] = None
     ) -> dict:
         if req_auth:
             method, url = self.api.illust_recommended_auth
@@ -303,6 +304,7 @@ class AppPixivAPI(BasePixivAPI):
             content_type=content_type,
             offset=offset,
             filter=filter,
+            viewed=viewed,
             bookmark_illust_ids=bookmark_illust_ids,
             include_ranking_illusts=include_ranking_illusts,
             include_ranking_label=include_ranking_label,
@@ -310,6 +312,7 @@ class AppPixivAPI(BasePixivAPI):
             max_bookmark_id_for_recommend=max_bookmark_id_for_recommend,
             min_bookmark_id_for_recent_illust=min_bookmark_id_for_recent_illust,
         )
+        print(params)
         return await self.requests_(method=method, url=url, params=params, auth=req_auth)
 
     # 作品排行

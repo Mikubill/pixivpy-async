@@ -7,6 +7,7 @@ dumpObj.py
 url.txt
 
 # pypi
+venv/
 dist/
 build/
 PixivPy.egg-info/
