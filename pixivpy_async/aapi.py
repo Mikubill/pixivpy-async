@@ -327,7 +327,6 @@ class AppPixivAPI(BasePixivAPI):
             max_bookmark_id_for_recommend=max_bookmark_id_for_recommend,
             min_bookmark_id_for_recent_illust=min_bookmark_id_for_recent_illust,
         )
-        print(params)
         return await self.requests_(method=method, url=url, params=params, auth=req_auth)
 
     # 作品排行
