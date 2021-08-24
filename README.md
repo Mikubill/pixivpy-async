@@ -24,6 +24,11 @@ _Based on PixivPy: https://github.com/upbit/pixivpy_
 pip install pixivpy-async
 ```
 
+## Or install with socks proxy support:
+```bash
+pip install pixivpy-async[socks]
+```
+
 ## Import Package
 
 Import **async** pixivpy:
@@ -71,10 +76,23 @@ Use environment variables, automatically recognized by aiohttp (not support sock
 
 Specify the proxy address, support socks5/socks4/http (not support https)
 
+If use the socks5/socks4 proxy, make sure the package is installed with [socks proxy support](#or-install-with-socks-proxy-support).
+
 ```python
 ...PixivClient(proxy="socks5://127.0.0.1:8080")
 ...PixivAPI(proxy="socks5://127.0.0.1:8080")
 ...AppPixivAPI(proxy="socks5://127.0.0.1:8080")
+```
+
+If the package is not installed with [socks proxy support](#or-install-with-socks-proxy-support), and your application runs on Windows, please make sure that event loop uses the policy **asyncio.WindowsSelectorEventLoopPolicy** before loop runs. [#issue4536](https://github.com/aio-libs/aiohttp/issues/4536#issuecomment-579740877)
+
+```python
+import asyncio
+
+if __name__ == '__main__':
+    policy = asyncio.WindowsSelectorEventLoopPolicy()
+    asyncio.set_event_loop_policy(policy)
+    asyncio.run(...)    # use pixivpy_async with socks proxy
 ```
 
 Note that env will be ignored when a proxy is specified.
@@ -110,13 +128,27 @@ await aapi.user_bookmarks_illust(2088434)
 await aapi.user_following(7314824)
 await aapi.user_follower(275527)
 await aapi.user_mypixiv(275527)
+await aapi.user_related(...)
+await aapi.user_follow_add(...)
+await aapi.user_follow_del(...)
+await aapi.user_bookmark_tags_illust(...)
+await aapi.user_list(...)
+await aapi.search_user(...)
 await aapi.trending_tags_illust()
 await aapi.search_illust(first_tag, search_target='partial_match_for_tags')
 await aapi.illust_ranking('day_male')
 await aapi.illust_follow(req_auth=True)
 await aapi.illust_recommended(req_auth=True)
 await aapi.illust_ranking('day', date='2016-08-01')
+await aapi.illust_bookmark_detail(...)
+await aapi.illust_bookmark_add(...)
+await aapi.illust_bookmark_delete(...)
 await aapi.download(image_url, path=directory, name=name)
+await aapi.search_novel(...)
+await aapi.user_novels(...)
+await aapi.novel_series(...)
+await aapi.novel_detail(...)
+await aapi.novel_text(...)
 
 await papi.works(46363414)
 await papi.users(1184799)

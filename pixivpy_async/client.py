@@ -1,6 +1,5 @@
 import asyncio
 import aiohttp
-from aiohttp_socks import ProxyConnector
 
 
 class PixivClient:
@@ -20,7 +19,16 @@ class PixivClient:
         """
 
         if proxy:
-            self.conn = ProxyConnector.from_url(proxy, limit_per_host=limit)
+            try:
+                from aiohttp_socks import ProxyConnector
+                self.conn = ProxyConnector.from_url(proxy, limit_per_host=limit)
+                _flag = False
+            except ModuleNotFoundError as e:
+                if proxy.startswith('socks'):
+                    raise e
+                else:
+                    self.conn = aiohttp.TCPConnector(limit_per_host=limit)
+                    _flag = True
         else:
             self.conn = aiohttp.TCPConnector(limit_per_host=limit)
 
@@ -30,6 +38,11 @@ class PixivClient:
             timeout=aiohttp.ClientTimeout(total=timeout),
             trust_env=env,
         )
+
+        if proxy and _flag:
+            from functools import partial
+            self.client.get = partial(self.client.get, proxy=proxy)
+            self.client.post = partial(self.client.post, proxy=proxy)
 
     def start(self):
         return self.client
