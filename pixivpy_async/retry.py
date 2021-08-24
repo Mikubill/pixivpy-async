@@ -1,5 +1,6 @@
 import asyncio
 import logging
+from inspect import isasyncgen
 
 from functools import wraps
 from .error import RetryExhaustedError
@@ -25,7 +26,9 @@ def retry(*exceptions, retries=5, cooldown=1, verbose=True):
 
             while True:
                 try:
-                    result = await func(*args, **kwargs)
+                    result = func(*args, **kwargs)
+                    if isasyncgen(result) is False:
+                        result = await result
                 except exceptions as err:
                     retries_count += 1
                     message = "Exception during {} execution. " \

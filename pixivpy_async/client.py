@@ -41,6 +41,7 @@ class PixivClient:
 
         if proxy and _flag:
             from functools import partial
+            self.client.head = partial(self.client.head, proxy=proxy)
             self.client.get = partial(self.client.get, proxy=proxy)
             self.client.post = partial(self.client.post, proxy=proxy)
 
