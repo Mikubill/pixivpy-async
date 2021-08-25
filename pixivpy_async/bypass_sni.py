@@ -68,6 +68,8 @@ class ByPassResolver(AbstractResolver):
             "cd": "false",
         }
 
+        # print("resolve: %s" % hostname)
+
         async with aiohttp.ClientSession() as session:
             results = await asyncio.gather(
                 *(asyncio.create_task(self.fetch(session, url, params, ClientTimeout(total=timeout))) for url in URLS),
@@ -76,37 +78,4 @@ class ByPassResolver(AbstractResolver):
         for r in results:
             if not isinstance(r, Exception):
                 return r
-
-
-RESOLVER = ByPassResolver()
-
-
-def get_bypass_client() -> aiohttp.ClientSession:
-    ssl_ctx = ssl.SSLContext()
-    ssl_ctx.check_hostname = False
-    ssl_ctx.verify_mode = ssl.CERT_NONE
-    connector = aiohttp.TCPConnector(ssl=ssl_ctx, resolver=RESOLVER)
-    client = aiohttp.ClientSession(connector=connector)
-    return client
-
-
-class BypassClient:
-    def __init__(self):
-        self.client = get_bypass_client()
-
-    async def __aenter__(self) -> aiohttp.ClientSession:
-        return self.client
-
-    async def __aexit__(self, exc_type, exc_val, exc_tb):
-        await self.client.close()
-
-
-async def test():
-    async with BypassClient() as client:
-        async with client.get(
-                "https://www.pixiv.net/ajax/search/artworks/%E7%99%BE%E5%90%88?word=%E7%99%BE%E5%90%88&order=date_d&mode=all&p=99999990&s_mode=s_tag&type=all&lang=zh") as rsp:
-            print(await rsp.json())
-
-
-if __name__ == '__main__':
-    asyncio.run(test())
+ 

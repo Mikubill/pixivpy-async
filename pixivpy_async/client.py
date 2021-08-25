@@ -1,8 +1,6 @@
 import asyncio
 import aiohttp
 
-from .bypass_sni import get_bypass_client
-
 class PixivClient:
     def __init__(self, limit=30, timeout=10, env=False, internal=False, proxy=None, bypass=False):
         """
@@ -19,30 +17,40 @@ class PixivClient:
 
         """
 
+        kwargs = {'limit_per_host': limit}
+
+        if bypass:
+            import ssl
+            from .bypass_sni import ByPassResolver
+
+            ssl_ctx = ssl.SSLContext()
+            ssl_ctx.check_hostname = False
+            ssl_ctx.verify_mode = ssl.CERT_NONE
+        
+            kwargs.update({'ssl': ssl_ctx, 'resolver': ByPassResolver()})
+
         if proxy:
             try:
                 from aiohttp_socks import ProxyConnector
-                self.conn = ProxyConnector.from_url(proxy, limit_per_host=limit)
+                self.conn = ProxyConnector.from_url(proxy, **kwargs)
                 _flag = False
             except ModuleNotFoundError as e:
                 if proxy.startswith('socks'):
                     raise e
                 else:
-                    self.conn = aiohttp.TCPConnector(limit_per_host=limit)
+                    self.conn = aiohttp.TCPConnector(**kwargs)
                     _flag = True
         else:
-            self.conn = aiohttp.TCPConnector(limit_per_host=limit)
+            self.conn = aiohttp.TCPConnector(**kwargs)
 
         self.internal = internal
         
-        if bypass:
-            self.client = get_bypass_client()
-        else:
-            self.client = aiohttp.ClientSession(
+        self.client = aiohttp.ClientSession(
                 connector=self.conn,
                 timeout=aiohttp.ClientTimeout(total=timeout),
                 trust_env=env,
             )
+            
 
         if proxy and _flag:
             from functools import partial

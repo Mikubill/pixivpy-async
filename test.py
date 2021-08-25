@@ -34,6 +34,30 @@ class TestMethods(unittest.TestCase):
         self.assertIsNotNone(credential.refresh_token)
         # self.assertIsNotNone(newpapi.login(_USERNAME, _PASSWORD))
 
+    def test_bypass(self):
+        newaapi = AppPixivAPI(bypass=True)
+        credential = newaapi.login(refresh_token=_TOKEN)
+        self.assertIsNotNone(credential)
+        self.assertIsNotNone(credential.access_token)
+        self.assertIsNotNone(credential.refresh_token)
+
+        detail = newaapi.user_detail(275527)
+        self.assertIsNotNone(detail)
+        self.assertIsNotNone(detail.user)
+        self.assertEqual(detail.user.id, 275527)
+
+    def test_bypass_2(self):
+        newaapi = AppPixivAPI(bypass=True, proxy="socks5://127.0.0.1:9011")
+        credential = newaapi.login(refresh_token=_TOKEN)
+        self.assertIsNotNone(credential)
+        self.assertIsNotNone(credential.access_token)
+        self.assertIsNotNone(credential.refresh_token)
+
+        detail = newaapi.user_detail(275527)
+        self.assertIsNotNone(detail)
+        self.assertIsNotNone(detail.user)
+        self.assertEqual(detail.user.id, 275527)
+
     def test_socks_1(self):
         newaapi = AppPixivAPI(proxy="socks5://127.0.0.1:9011")
         credential = newaapi.login(refresh_token=_TOKEN)

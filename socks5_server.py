@@ -52,7 +52,6 @@ class SocksProxy(StreamRequestHandler):
                 remote = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
                 remote.connect((address, port))
                 bind_address = remote.getsockname()
-                # logging.info('Connected to %s %s' % (address, port))
             else:
                 self.server.close_request(self.request)
 

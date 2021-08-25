@@ -6,11 +6,11 @@ from .bapi import BasePixivAPI
 
 
 class AppPixivAPI(BasePixivAPI):
-    def __init__(self, bypass=False, **requests_kwargs):
+    def __init__(self, **requests_kwargs):
         """
         initialize requests kwargs if need be
         """
-        super(AppPixivAPI, self).__init__(bypass=bypass, **requests_kwargs)
+        super(AppPixivAPI, self).__init__(**requests_kwargs)
 
     # 用户详情
     async def user_detail(
