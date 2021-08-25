@@ -60,6 +60,11 @@ await client.close()
 # Or Following Standard Usage
 papi = PixivAPI()
 aapi = AppPixivAPI()
+
+# 绕过SNI检测
+papi = PixivAPI(bypass=True)
+aapi = AppPixivAPI(bypass=True)
+
 ```
 
 ## Proxy

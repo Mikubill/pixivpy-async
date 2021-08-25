@@ -305,7 +305,7 @@ class AppPixivAPI(BasePixivAPI):
             max_bookmark_id_for_recommend: int = None,
             min_bookmark_id_for_recent_illust: int = None,
             offset: int = None,
-            include_ranking_illusts = None,
+            include_ranking_illusts=None,
             bookmark_illust_ids: list = None,
             include_privacy_policy=None,
             req_auth: bool = True,

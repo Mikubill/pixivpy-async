@@ -93,7 +93,8 @@ async def _test_async_illust_detail(num):
         await aapi.login(refresh_token=_TOKEN)
         # await aapi.login(_USERNAME, _PASSWORD)
         # await papi.login(_USERNAME, _PASSWORD)
-        tasks = [asyncio.ensure_future(illust_detail(aapi, i)) for i in range(num)]
+        tasks = [asyncio.ensure_future(illust_detail(aapi, i))
+                 for i in range(num)]
         await asyncio.wait(tasks)
 
 
@@ -131,7 +132,8 @@ async def _test_async_user_illusts(num):
         await aapi.login(refresh_token=_TOKEN)
         # await aapi.login(_USERNAME, _PASSWORD)
         # await papi.login(_USERNAME, _PASSWORD)
-        tasks = [asyncio.ensure_future(user_illusts(aapi, i)) for i in range(num)]
+        tasks = [asyncio.ensure_future(user_illusts(aapi, i))
+                 for i in range(num)]
         await asyncio.wait(tasks)
 
 
@@ -169,7 +171,8 @@ async def _test_async_user_detail(num):
         await aapi.login(refresh_token=_TOKEN)
         # await aapi.login(_USERNAME, _PASSWORD)
         # await papi.login(_USERNAME, _PASSWORD)
-        tasks = [asyncio.ensure_future(user_detail(aapi, i)) for i in range(num)]
+        tasks = [asyncio.ensure_future(user_detail(aapi, i))
+                 for i in range(num)]
         await asyncio.wait(tasks)
 
 
@@ -207,7 +210,8 @@ async def _test_async_ugoira_metadata(num):
         await aapi.login(refresh_token=_TOKEN)
         # await aapi.login(_USERNAME, _PASSWORD)
         # await papi.login(_USERNAME, _PASSWORD)
-        tasks = [asyncio.ensure_future(ugoira_metadata(aapi, i)) for i in range(num)]
+        tasks = [asyncio.ensure_future(
+            ugoira_metadata(aapi, i)) for i in range(num)]
         await asyncio.wait(tasks)
 
 
@@ -283,7 +287,8 @@ async def _test_async_me_following_works(num):
         await aapi.login(refresh_token=_TOKEN)
         # await aapi.login(_USERNAME, _PASSWORD)
         # await papi.login(_USERNAME, _PASSWORD)
-        tasks = [asyncio.ensure_future(me_following_works(papi, i)) for i in range(num)]
+        tasks = [asyncio.ensure_future(
+            me_following_works(papi, i)) for i in range(num)]
         await asyncio.wait(tasks)
 
 
@@ -359,7 +364,8 @@ async def _test_async_latest_works(num):
         await aapi.login(refresh_token=_TOKEN)
         # await aapi.login(_USERNAME, _PASSWORD)
         # await papi.login(_USERNAME, _PASSWORD)
-        tasks = [asyncio.ensure_future(latest_works(papi, i)) for i in range(num)]
+        tasks = [asyncio.ensure_future(latest_works(papi, i))
+                 for i in range(num)]
         await asyncio.wait(tasks)
 
 
