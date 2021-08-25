@@ -1,9 +1,10 @@
 import asyncio
 import aiohttp
 
+from .bypass_sni import get_bypass_client
 
 class PixivClient:
-    def __init__(self, limit=30, timeout=10, env=False, internal=False, proxy=None):
+    def __init__(self, limit=30, timeout=10, env=False, internal=False, proxy=None, bypass=False):
         """
             When 'env' is True and 'proxy' is None, possible proxies will be
             obtained automatically (wrong proxy may be obtained).
@@ -33,11 +34,15 @@ class PixivClient:
             self.conn = aiohttp.TCPConnector(limit_per_host=limit)
 
         self.internal = internal
-        self.client = aiohttp.ClientSession(
-            connector=self.conn,
-            timeout=aiohttp.ClientTimeout(total=timeout),
-            trust_env=env,
-        )
+        
+        if bypass:
+            self.client = get_bypass_client()
+        else:
+            self.client = aiohttp.ClientSession(
+                connector=self.conn,
+                timeout=aiohttp.ClientTimeout(total=timeout),
+                trust_env=env,
+            )
 
         if proxy and _flag:
             from functools import partial

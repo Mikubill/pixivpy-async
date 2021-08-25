@@ -17,15 +17,15 @@ _USERNAME = "userbay"
 _PASSWORD = "UserPay"
 _TOKEN = "0zeYA-PllRYp1tfrsq_w3vHGU1rPy237JMf5oDt73c4"
 
-aapi = AppPixivAPI()
-papi = PixivAPI()
+aapi = AppPixivAPI(bypass=True)
+papi = PixivAPI(bypass=True)
 papi.login(refresh_token=_TOKEN)
 aapi.login(refresh_token=_TOKEN)
 t = time.time()
 
 class TestMethods(unittest.TestCase):
     def test_login(self):
-        newaapi = AppPixivAPI()
+        newaapi = AppPixivAPI(bypass=True)
         # newpapi = PixivAPI()
         # self.assertIsNotNone(newaapi.login(_USERNAME, _PASSWORD))
         credential = newaapi.login(refresh_token=_TOKEN)
