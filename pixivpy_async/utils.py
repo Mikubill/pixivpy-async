@@ -66,7 +66,10 @@ class Utils:
         query = up.urlparse(next_url).query
         for key, value in up.parse_qs(query).items():
             if '[' in key and key.endswith(']'):
-                result_qs[key.split('[')[0]] = value
+                if key.split('[')[0] in result_qs:
+                    result_qs[key.split('[')[0]].extend(value)
+                else:
+                    result_qs[key.split('[')[0]] = value
             else:
                 result_qs[key] = value[-1]
 

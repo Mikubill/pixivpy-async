@@ -1,5 +1,6 @@
 class API:
-    def __init__(self, app_hosts="https://app-api.pixiv.net",
+    def __init__(self,
+                 app_hosts="https://app-api.pixiv.net",
                  pub_hosts="https://public-api.secure.pixiv.net",
                  auth_hosts="https://oauth.secure.pixiv.net"):
         self.appv1 = '%s/v1' % app_hosts
@@ -24,6 +25,10 @@ class API:
     @property
     def user_bookmarks_illust(self):
         return 'GET', '%s/user/bookmarks/illust' % self.appv1
+
+    @property
+    def user_related(self):
+        return 'GET', '%s/user/related' % self.appv1
 
     @property
     def illust_follow(self):
@@ -87,11 +92,11 @@ class API:
 
     @property
     def user_follow_add(self):
-        return 'GET', '%s/user/follow/add' % self.appv1
+        return 'POST', '%s/user/follow/add' % self.appv1
 
     @property
     def user_follow_del(self):
-        return 'GET', '%s/user/follow/add' % self.appv1
+        return 'POST', '%s/user/follow/delete' % self.appv1
 
     @property
     def user_mypixiv(self):
@@ -112,6 +117,22 @@ class API:
     @property
     def search_novel(self):
         return 'GET', '%s/search/novel' % self.appv1
+
+    @property
+    def user_novels(self):
+        return 'GET', '%s/user/novels' % self.appv1
+
+    @property
+    def novel_series(self):
+        return 'GET', '%s/novel/series' % self.appv2
+
+    @property
+    def novel_detail(self):
+        return 'GET', '%s/novel/detail' % self.appv2
+
+    @property
+    def novel_text(self):
+        return 'GET', '%s/novel/text' % self.appv1
 
     """
         Public API
@@ -169,7 +190,8 @@ class API:
         return 'GET', '%s/users/%d/works.json' % (self.apiv1, author_id)
 
     def users_favorite_works(self, author_id):
-        return 'GET', '%s/users/%d/favorite_works.json' % (self.apiv1, author_id)
+        return 'GET', '%s/users/%d/favorite_works.json' % (self.apiv1,
+                                                           author_id)
 
     def users_feeds(self, author_id):
         return 'GET', '%s/users/%d/feeds.json' % (self.apiv1, author_id)

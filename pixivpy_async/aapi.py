@@ -216,6 +216,21 @@ class AppPixivAPI(BasePixivAPI):
         )
         return await self.requests_(method=method, url=url, params=params, auth=req_auth)
 
+    async def user_related(
+            self,
+            seed_user_id,
+            filter: str = 'for_ios',
+            offset: int = None,
+            req_auth: bool = True
+    ):
+        method, url = self.api.user_related
+        params = self.set_params(
+            seed_user_id=seed_user_id,
+            filter=filter,
+            offset=offset
+        )
+        return await self.requests_(method=method, url=url, params=params, auth=req_auth)
+
     # 关注用户的新作
     # restrict: ["public", "private"]
     async def illust_follow(
@@ -290,10 +305,11 @@ class AppPixivAPI(BasePixivAPI):
             max_bookmark_id_for_recommend: int = None,
             min_bookmark_id_for_recent_illust: int = None,
             offset: int = None,
-            include_ranking_illusts=None,
+            include_ranking_illusts = None,
             bookmark_illust_ids: list = None,
             include_privacy_policy=None,
-            req_auth: bool = True
+            req_auth: bool = True,
+            viewed: [int] = None
     ) -> dict:
         if req_auth:
             method, url = self.api.illust_recommended_auth
@@ -303,6 +319,7 @@ class AppPixivAPI(BasePixivAPI):
             content_type=content_type,
             offset=offset,
             filter=filter,
+            viewed=viewed,
             bookmark_illust_ids=bookmark_illust_ids,
             include_ranking_illusts=include_ranking_illusts,
             include_ranking_label=include_ranking_label,
@@ -593,6 +610,58 @@ class AppPixivAPI(BasePixivAPI):
             start_date=start_date,
             end_date=end_date,
             offset=offset
+        )
+        return await self.requests_(method=method, url=url, params=params, auth=req_auth)
+
+    async def user_novels(
+            self,
+            user_id: int,
+            filter: str = 'for_ios',
+            offset: int = None,
+            req_auth: bool = True
+    ):
+        method, url = self.api.user_novels
+        params = self.set_params(
+            user_id=user_id,
+            filter=filter,
+            offset=offset
+        )
+        return await self.requests_(method=method, url=url, params=params, auth=req_auth)
+
+    async def novel_series(
+            self,
+            series_id: int,
+            filter: str = 'for_ios',
+            last_order=None,
+            req_auth: bool = True
+    ):
+        method, url = self.api.novel_series
+        params = self.set_params(
+            series_id=series_id,
+            filter=filter,
+            last_order=last_order
+        )
+        return await self.requests_(method=method, url=url, params=params, auth=req_auth)
+
+    async def novel_detail(
+            self,
+            novel_id: int,
+            req_auth: bool = True
+    ):
+        method, url = self.api.novel_detail
+        params = self.set_params(
+            novel_id=novel_id,
+        )
+        return await self.requests_(method=method, url=url, params=params, auth=req_auth)
+
+    async def novel_text(
+            self,
+            novel_id: int,
+            req_auth: bool = True
+    ):
+        method, url = self.api.novel_text
+        params = self.set_params(
+            novel_id=novel_id,
         )
         return await self.requests_(method=method, url=url, params=params, auth=req_auth)
 

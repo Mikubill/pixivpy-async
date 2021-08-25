@@ -24,6 +24,12 @@ _基于PixivPy: https://github.com/upbit/pixivpy_
 pip install pixivpy-async --upgrade
 ```
 
+## 或安装本库并安装socks代理支持
+
+```bash
+pip install pixivpy-async[socks]
+```
+
 ## 导入
 
 导入 pixivpy-async:
@@ -76,10 +82,23 @@ Pixivpy-Async支持多种代理模式，均需在Init时指定。
 
 指定代理地址，支持socks5/socks4/http（不支持https）
 
+如果使用的是socks5/socks4代理，请确保安装的本库拥有[socks代理支持](#或安装本库并安装socks代理支持)
+
 ```python
 ...PixivClient(proxy="socks5://127.0.0.1:8080")
 ...PixivAPI(proxy="socks5://127.0.0.1:8080")
 ...AppPixivAPI(proxy="socks5://127.0.0.1:8080")
+```
+
+如果本库安装时没有安装[socks代理支持](#或安装本库并安装socks代理支持)，并且你的应用运行在Windows上，请确保事件循环在运行前将策略设置为 **asyncio.WindowsSelectorEventLoopPolicy**。 [#issue4536](https://github.com/aio-libs/aiohttp/issues/4536#issuecomment-579740877)
+
+```python
+import asyncio
+
+if __name__ == '__main__':
+    policy = asyncio.WindowsSelectorEventLoopPolicy()
+    asyncio.set_event_loop_policy(policy)
+    asyncio.run(...)    # use pixivpy_async with socks proxy
 ```
 
 注意，指定了proxy后env会被忽略。
@@ -116,15 +135,30 @@ await aapi.user_bookmarks_illust(2088434)
 await aapi.user_following(7314824)
 await aapi.user_follower(275527)
 await aapi.user_mypixiv(275527)
+await aapi.user_related(...)
+await aapi.user_follow_add(...)
+await aapi.user_follow_del(...)
+await aapi.user_bookmark_tags_illust(...)
+await aapi.user_list(...)
+await aapi.search_user(...)
 
 await aapi.trending_tags_illust()
 await aapi.search_illust(first_tag, search_target='partial_match_for_tags')
 await aapi.illust_ranking('day_male')
 await aapi.illust_follow(req_auth=True)
 await aapi.illust_recommended(req_auth=True)
+await aapi.illust_bookmark_detail(...)
+await aapi.illust_bookmark_add(...)
+await aapi.illust_bookmark_delete(...)
 
 await aapi.illust_ranking('day', date='2016-08-01')
 await aapi.download(image_url, path=directory, name=name)
+
+await aapi.search_novel(...)
+await aapi.user_novels(...)
+await aapi.novel_series(...)
+await aapi.novel_detail(...)
+await aapi.novel_text(...)
 
 await papi.works(46363414)
 await papi.users(1184799)

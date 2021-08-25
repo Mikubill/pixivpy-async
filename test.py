@@ -15,7 +15,7 @@ sys.dont_write_bytecode = True
 
 _USERNAME = "userbay"
 _PASSWORD = "UserPay"
-_TOKEN = "uXooTT7xz9v4mflnZqJUO7po9W5ciouhKrIDnI2Dv3c"
+_TOKEN = "0zeYA-PllRYp1tfrsq_w3vHGU1rPy237JMf5oDt73c4"
 
 aapi = AppPixivAPI(bypass=True)
 papi = PixivAPI(bypass=True)
@@ -23,75 +23,59 @@ papi.login(refresh_token=_TOKEN)
 aapi.login(refresh_token=_TOKEN)
 t = time.time()
 
-
-async def async_func():
-    from pixivpy_async import PixivClient
-    from pixivpy_async import AppPixivAPI as apapi
-    from pixivpy_async import PixivAPI as ppapi
-
-    async with PixivClient() as client:
-        aapid = apapi(client=client,bypass=True)
-        await aapid.login(refresh_token=_TOKEN)
-        # await aapid.login( username=_USERNAME, password=_PASSWORD)
-        await aapid.illust_detail(59580629)
-        await aapid.illust_comments(59580629)
-        await aapid.ugoira_metadata(51815717)
-        await aapid.illust_recommended(bookmark_illust_ids=[59580629])
-        await aapid.illust_related(59580629)
-        await aapid.user_detail(275527)
-        await aapid.user_illusts(275527)
-        await aapid.user_bookmarks_illust(2088434)
-        await aapid.user_following(7314824)
-        await aapid.user_follower(275527)
-        await aapid.user_follow_add(24687177)
-        await aapid.user_follow_del(24687177)
-        await aapid.user_mypixiv(275527)
-        await aapid.trending_tags_illust()
-        await aapid.illust_ranking('day_male')
-        await aapid.illust_follow(req_auth=True)
-        await aapid.illust_recommended(req_auth=True)
-        await aapid.illust_ranking('day', date='2016-08-01')
-
-        # papid = ppapi(client=client)
-        # await papid.login( username=_USERNAME, password=_PASSWORD)
-        # await papid.works(46363414),
-        # await papid.users(1184799),
-        # await papid.me_feeds(show_r18=0),
-        # await papid.me_favorite_works(publicity='private'),
-        # await papid.me_following_works(),
-        # await papid.me_following(),
-        # await papid.users_works(1184799),
-        # await papid.users_favorite_works(1184799),
-        # await papid.users_feeds(1184799, show_r18=0),
-        # await papid.users_following(4102577),
-        # await papid.ranking('illust', 'weekly', 1),
-        # await papid.ranking(ranking_type='all', mode='daily', page=1, date='2015-05-01'),
-        # await papid.search_works("五航戦 姉妹", page=1, mode='text'),
-        # await papid.latest_works()
-
-
 class TestMethods(unittest.TestCase):
     def test_login(self):
         newaapi = AppPixivAPI(bypass=True)
         # newpapi = PixivAPI()
         # self.assertIsNotNone(newaapi.login(_USERNAME, _PASSWORD))
-        self.assertIsNotNone(newaapi.login(refresh_token=_TOKEN))
+        credential = newaapi.login(refresh_token=_TOKEN)
+        self.assertIsNotNone(credential)
+        self.assertIsNotNone(credential.access_token)
+        self.assertIsNotNone(credential.refresh_token)
         # self.assertIsNotNone(newpapi.login(_USERNAME, _PASSWORD))
 
-    def test_illust_0(self):
+    def test_socks_1(self):
+        newaapi = AppPixivAPI(proxy="socks5://127.0.0.1:9011")
+        credential = newaapi.login(refresh_token=_TOKEN)
+        self.assertIsNotNone(credential)
+        self.assertIsNotNone(credential.access_token)
+        self.assertIsNotNone(credential.refresh_token)
 
-        self.assertIsNotNone(aapi.illust_detail(59580629))
+        detail = newaapi.user_detail(275527)
+        self.assertIsNotNone(detail)
+        self.assertIsNotNone(detail.user)
+        self.assertEqual(detail.user.id, 275527)
+    
+    def test_socks_2(self):
+        os.environ['ALL_PROXY']="socks5://127.0.0.1:9011"
+        newaapi = AppPixivAPI(env=True)
+        credential = newaapi.login(refresh_token=_TOKEN)
+        self.assertIsNotNone(credential)
+        self.assertIsNotNone(credential.access_token)
+        self.assertIsNotNone(credential.refresh_token)
+
+        detail = newaapi.user_detail(275527)
+        self.assertIsNotNone(detail)
+        self.assertIsNotNone(detail.user)
+        self.assertEqual(detail.user.id, 275527)
 
     def test_illust_1(self):
-        self.assertIsNotNone(aapi.illust_comments(59580629))
+        illust = aapi.illust_detail(59580629)
+        self.assertIsNotNone(illust)
+        self.assertIsNotNone(illust,illust)
+        self.assertEqual(illust.illust.id, 59580629)
+        self.assertIsNotNone(illust.illust.image_urls)
 
     def test_illust_2(self):
-        self.assertIsNotNone(aapi.ugoira_metadata(51815717))
+        self.assertIsNotNone(aapi.illust_comments(59580629))
 
     def test_illust_3(self):
-        self.assertIsNotNone(aapi.illust_related(59580629))
+        self.assertIsNotNone(aapi.ugoira_metadata(51815717))
 
     def test_illust_4(self):
+        self.assertIsNotNone(aapi.illust_related(59580629))
+
+    def test_illust_5(self):
         self.assertIsNotNone(aapi.illust_bookmark_detail(59580629))
 
     def test_page(self):
@@ -101,15 +85,24 @@ class TestMethods(unittest.TestCase):
         self.assertIsNotNone(aapi.parse_qs(json_result.next_url))  # page down in some case
         next_qs = aapi.parse_qs(json_result.next_url)
         self.assertIsNotNone(aapi.illust_recommended(**next_qs))
-
-    def test_user(self):
-        self.assertIsNotNone(aapi.user_detail(275527))
+        
 
     def test_user_1(self):
-        self.assertIsNotNone(aapi.user_illusts(275527))
+        self.assertIsNotNone(aapi.user_detail(275527))
 
     def test_user_2(self):
+        self.assertIsNotNone(aapi.user_illusts(275527))
+
+    def test_user_3(self):
         self.assertIsNotNone(aapi.user_list(2088434))
+    
+    def test_user_4(self):
+        self.assertIsNotNone(aapi.user_related(7314824))
+
+    def test_user_5(self):
+        self.assertIsNotNone(aapi.search_user('ほし'))
+        self.assertIsNotNone(aapi.user_bookmark_tags_illust())
+
 
     def test_bookmark(self):
         self.assertIsNotNone(aapi.user_bookmarks_illust(2088434))
@@ -120,16 +113,29 @@ class TestMethods(unittest.TestCase):
     # def test_showcase(self):
     #     self.assertIsNotNone(aapi.showcase_article(4616))
 
-    def test_follow(self):
-
+    def test_follow_1(self):
         self.assertIsNotNone(aapi.user_following(7314824))
 
-    def test_follow_1(self):
+    def test_follow_2(self):
         self.assertIsNotNone(aapi.user_follower(275527))
+    
+    def test_follow_3(self):
         self.assertIsNotNone(aapi.user_mypixiv(275527))
 
-    def test_tag(self):
+    def test_add(self):
+        self.assertIsNot(aapi.user_follow_add(24687177), {})
+    
+    def test_del(self):
+        self.assertIsNot(aapi.user_follow_del(24687177), {})
 
+    def test_novel(self):
+        self.assertIsNotNone(aapi.search_novel('abc'))
+        self.assertIsNotNone(aapi.user_novels(2748828))
+        self.assertIsNotNone(aapi.novel_series(0))
+        self.assertIsNotNone(aapi.novel_detail(14588477))
+        self.assertIsNotNone(aapi.novel_text(14588477))
+
+    def test_tag(self):
         self.assertIsNotNone(aapi.trending_tags_illust())
         first_tag = None
         response = aapi.trending_tags_illust()
@@ -149,6 +155,7 @@ class TestMethods(unittest.TestCase):
         illust_id = 74187223
         tags = ['Fate/GO', '50000users入り', '私服']
         self.assertIsNotNone(aapi.illust_bookmark_add(illust_id, tags=tags))
+        self.assertIsNotNone(aapi.illust_bookmark_delete(illust_id))
         self.assertIsNotNone(aapi.illust_bookmark_detail(illust_id))
 
     def test_download(self):
@@ -217,14 +224,6 @@ class TestMethods(unittest.TestCase):
         loop = asyncio.get_event_loop()
         self.assertIsNotNone(loop.run_until_complete(Net().post('https://httpbin.org/post', None, {'accept': 'application/json'}, None)))
         self.assertIsNotNone(loop.run_until_complete(Net().delete('https://httpbin.org/delete', {'accept': 'application/json'}, None)))
-
-    # def test_async_gather(self):
-        # c = time.time()
-        # print('Sync Func: %s s' % (c - t))
-        # p = asyncio.gather(async_func())
-        # loop = asyncio.get_event_loop()
-        # loop.run_until_complete(p)
-#        print('Async Func: %s s' % (time.time() - c))
 
 
 if __name__ == '__main__':
