@@ -41,7 +41,8 @@ class Utils:
                         )
                     elif key in "ids":
                         result.update(
-                            {'%s[]' % key: ",".join([str(pid) for pid in value])}
+                            {'%s[]' % key: ",".join(
+                                [str(pid) for pid in value])}
                         )
                     else:
                         result.update(

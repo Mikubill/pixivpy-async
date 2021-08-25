@@ -140,7 +140,7 @@ class BasePixivAPI(Net, Utils):
         if name:
             img_path = os.path.join(path, prefix + name)
             if auto_ext is True:
-                _ = await self.down(url, referer, request_content_type=auto_ext)
+                _ = await self.down(url, referer, _request_content_type=auto_ext)
                 type = await _.__anext__()
                 if type in self.content_type_mapping.keys():
                     _name, _ext = os.path.splitext(img_path)
@@ -148,13 +148,13 @@ class BasePixivAPI(Net, Utils):
             if os.path.exists(img_path) and not replace:
                 return False
             else:
-                _ = locals().get('_', await self.down(url, referer, request_content_type=False))
+                _ = locals().get('_', await self.down(url, referer, _request_content_type=False))
                 response = await _.__anext__()
                 await _.aclose()
                 async with aiofiles.open(img_path, mode='wb') as out_file:
                     await out_file.write(response)
         else:
-            _ = await self.down(url, referer, request_content_type=False)
+            _ = await self.down(url, referer, _request_content_type=False)
             response = await _.__anext__()
             await _.aclose()
             fname.write(response)

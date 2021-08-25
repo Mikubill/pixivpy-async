@@ -1,4 +1,4 @@
-# Modified From https://github.com/rushter/socks5 
+# Modified From https://github.com/rushter/socks5
 
 import logging
 import select
@@ -35,7 +35,8 @@ class SocksProxy(StreamRequestHandler):
         self.connection.sendall(struct.pack("!BB", SOCKS_VERSION, 0))
 
         # request
-        version, cmd, _, address_type = struct.unpack("!BBBB", self.connection.recv(4))
+        version, cmd, _, address_type = struct.unpack(
+            "!BBBB", self.connection.recv(4))
         assert version == SOCKS_VERSION
 
         if address_type == 1:  # IPv4
@@ -52,7 +53,6 @@ class SocksProxy(StreamRequestHandler):
                 remote = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
                 remote.connect((address, port))
                 bind_address = remote.getsockname()
-                # logging.info('Connected to %s %s' % (address, port))
             else:
                 self.server.close_request(self.request)
 
