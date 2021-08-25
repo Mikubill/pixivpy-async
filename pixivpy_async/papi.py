@@ -67,7 +67,8 @@ class PixivAPI(BasePixivAPI):
             page=page,
             per_page=per_page,
             publicity=publicity,
-            image_sizes=image_sizes if image_sizes else ['px_128x128', 'px_480mw', 'large'],
+            image_sizes=image_sizes if image_sizes else [
+                'px_128x128', 'px_480mw', 'large'],
         )
         return await self.requests_(method=method, url=url, params=params, auth=True)
 
@@ -107,7 +108,8 @@ class PixivAPI(BasePixivAPI):
         params = self.set_params(
             page=page,
             per_page=per_page,
-            image_sizes=image_sizes if image_sizes else ['px_128x128', 'px_480mw', 'large'],
+            image_sizes=image_sizes if image_sizes else [
+                'px_128x128', 'px_480mw', 'large'],
             include_stats=include_stats,
             include_sanity_level=include_sanity_level,
         )
@@ -166,7 +168,8 @@ class PixivAPI(BasePixivAPI):
             per_page=per_page,
             include_stats=include_stats,
             include_sanity_level=include_sanity_level,
-            image_sizes=image_sizes if image_sizes else ['px_128x128', 'px_480mw', 'large']
+            image_sizes=image_sizes if image_sizes else [
+                'px_128x128', 'px_480mw', 'large']
         )
         return await self.requests_(method=method, url=url, params=params, auth=True)
 
@@ -183,7 +186,8 @@ class PixivAPI(BasePixivAPI):
             page=page,
             per_page=per_page,
             include_sanity_level=include_sanity_level,
-            image_sizes=image_sizes if image_sizes else ['px_128x128', 'px_480mw', 'large']
+            image_sizes=image_sizes if image_sizes else [
+                'px_128x128', 'px_480mw', 'large']
         )
         return await self.requests_(method=method, url=url, params=params, auth=True)
 
@@ -235,8 +239,10 @@ class PixivAPI(BasePixivAPI):
             per_page=per_page,
             include_stats=include_stats,
             include_sanity_level=include_sanity_level,
-            image_sizes=image_sizes if image_sizes else ['px_128x128', 'px_480mw', 'large'],
-            profile_image_sizes=profile_image_sizes if profile_image_sizes else ['px_170x170', 'px_50x50'],
+            image_sizes=image_sizes if image_sizes else [
+                'px_128x128', 'px_480mw', 'large'],
+            profile_image_sizes=profile_image_sizes if profile_image_sizes else [
+                'px_170x170', 'px_50x50'],
         )
         return await self.requests_(method=method, url=url, params=params, auth=True)
 
@@ -265,7 +271,8 @@ class PixivAPI(BasePixivAPI):
             per_page=per_page,
             include_stats=include_stats,
             include_sanity_level=include_sanity_level,
-            image_sizes=image_sizes if image_sizes else ['px_128x128', 'px_480mw', 'large'],
+            image_sizes=image_sizes if image_sizes else [
+                'px_128x128', 'px_480mw', 'large'],
             types=types if types else ['illustration', 'manga', 'ugoira'],
         )
         return await self.requests_(method=method, url=url, params=params, auth=True)
@@ -285,8 +292,10 @@ class PixivAPI(BasePixivAPI):
             per_page=per_page,
             include_stats=include_stats,
             include_sanity_level=include_sanity_level,
-            image_sizes=image_sizes if image_sizes else ['px_128x128', 'px_480mw', 'large'],
-            profile_image_sizes=profile_image_sizes if profile_image_sizes else ['px_170x170', 'px_50x50'],
+            image_sizes=image_sizes if image_sizes else [
+                'px_128x128', 'px_480mw', 'large'],
+            profile_image_sizes=profile_image_sizes if profile_image_sizes else [
+                'px_170x170', 'px_50x50'],
         )
         return await self.requests_(method=method, url=url, params=params, auth=True)
 
@@ -309,8 +318,10 @@ class PixivAPI(BasePixivAPI):
             date=date,
             include_stats=include_stats,
             include_sanity_level=include_sanity_level,
-            image_sizes=image_sizes if image_sizes else ['px_128x128', 'px_480mw', 'large'],
-            profile_image_sizes=profile_image_sizes if profile_image_sizes else ['px_170x170', 'px_50x50'],
+            image_sizes=image_sizes if image_sizes else [
+                'px_128x128', 'px_480mw', 'large'],
+            profile_image_sizes=profile_image_sizes if profile_image_sizes else [
+                'px_170x170', 'px_50x50'],
         )
 
     async def bad_words(self):

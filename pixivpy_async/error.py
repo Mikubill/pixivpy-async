@@ -41,7 +41,8 @@ class AuthTokenError(PixivError):
 
 class TokenError(PixivError):
     def __init__(self, token=None, e=None):
-        self.reason = 'Get access_token error! \nResponse: %s\nError: %s' % (token, e)
+        self.reason = 'Get access_token error! \nResponse: %s\nError: %s' % (
+            token, e)
         super(PixivError, self).__init__(self, self.reason)
 
     def __str__(self):

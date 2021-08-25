@@ -1,6 +1,7 @@
 import asyncio
 import aiohttp
 
+
 class PixivClient:
     def __init__(self, limit=30, timeout=10, env=False, internal=False, proxy=None, bypass=False):
         """
@@ -26,7 +27,7 @@ class PixivClient:
             ssl_ctx = ssl.SSLContext()
             ssl_ctx.check_hostname = False
             ssl_ctx.verify_mode = ssl.CERT_NONE
-        
+
             kwargs.update({'ssl': ssl_ctx, 'resolver': ByPassResolver()})
 
         if proxy:
@@ -44,13 +45,12 @@ class PixivClient:
             self.conn = aiohttp.TCPConnector(**kwargs)
 
         self.internal = internal
-        
+
         self.client = aiohttp.ClientSession(
-                connector=self.conn,
-                timeout=aiohttp.ClientTimeout(total=timeout),
-                trust_env=env,
-            )
-            
+            connector=self.conn,
+            timeout=aiohttp.ClientTimeout(total=timeout),
+            trust_env=env,
+        )
 
         if proxy and _flag:
             from functools import partial

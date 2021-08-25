@@ -34,7 +34,8 @@ def retry(*exceptions, retries=5, cooldown=1, verbose=True):
 
                     if retries_count > retries:
                         verbose and log.exception(message)
-                        raise RetryExhaustedError(func.__qualname__, args, kwargs) from err
+                        raise RetryExhaustedError(
+                            func.__qualname__, args, kwargs) from err
                     else:
                         verbose and log.warning(message)
 

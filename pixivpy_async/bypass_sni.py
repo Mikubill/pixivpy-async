@@ -39,8 +39,7 @@ class ByPassResolver(AbstractResolver):
         async with client_session.get(url, params=params, timeout=timeout) as rsp:
             response = await rsp.text()
             obj = json.loads(response)
-            pattern = re.compile(
-                "((\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.){3}(1\d\d|2[0-4]\d|25[0-5]|[1-9]\d|\d)")
+            pattern = re.compile(r"((\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.){3}(1\d\d|2[0-4]\d|25[0-5]|[1-9]\d|\d)")
             result = []
             for i in obj["Answer"]:
                 ip = i["data"]
@@ -68,14 +67,12 @@ class ByPassResolver(AbstractResolver):
             "cd": "false",
         }
 
-        # print("resolve: %s" % hostname)
-
         async with aiohttp.ClientSession() as session:
             results = await asyncio.gather(
-                *(asyncio.create_task(self.fetch(session, url, params, ClientTimeout(total=timeout))) for url in URLS),
+                *(asyncio.create_task(self.fetch(session, url, params,
+                  ClientTimeout(total=timeout))) for url in URLS),
                 return_exceptions=True)
 
         for r in results:
             if not isinstance(r, Exception):
                 return r
- 

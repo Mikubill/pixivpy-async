@@ -5,7 +5,7 @@ from .retry import retry
 from .client import PixivClient
 
 retryable_error = asyncio.TimeoutError, aiohttp.ClientError, aiohttp.ServerTimeoutError, \
-                  aiohttp.ServerConnectionError, aiohttp.ServerDisconnectedError
+    aiohttp.ServerConnectionError, aiohttp.ServerDisconnectedError
 
 
 class ClientManager:
