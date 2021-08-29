@@ -1,7 +1,6 @@
 # -*- coding:utf-8 -*-
 import hashlib
 import os
-import re
 from datetime import datetime
 import aiofiles
 from .error import *
@@ -140,21 +139,24 @@ class BasePixivAPI(Net, Utils):
             name = fname
         if name:
             img_path = os.path.join(path, prefix + name)
+            if auto_ext is True:
+                _ = await self.down(url, referer, _request_content_type=auto_ext)
+                type = await _.__anext__()
+                if type in self.content_type_mapping.keys():
+                    _name, _ext = os.path.splitext(img_path)
+                    img_path = _name + self.content_type_mapping[type]
             if os.path.exists(img_path) and not replace:
                 return False
             else:
-                response, type = await self.down(url, referer)
-                if auto_ext and type in self.content_type_mapping:
-                    _ext = re.findall(r'(\.\w+)$', img_path)
-                    if _ext:
-                        img_path = img_path.replace(
-                            _ext[0], self.content_type_mapping[type])
-                    else:
-                        img_path += self.content_type_mapping[type]
+                _ = locals().get('_', await self.down(url, referer, _request_content_type=False))
+                response = await _.__anext__()
+                await _.aclose()
                 async with aiofiles.open(img_path, mode='wb') as out_file:
                     await out_file.write(response)
         else:
-            response, _ = await self.down(url, referer)
+            _ = await self.down(url, referer, _request_content_type=False)
+            response = await _.__anext__()
+            await _.aclose()
             fname.write(response)
         del response
         return True

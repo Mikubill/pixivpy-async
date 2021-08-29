@@ -34,14 +34,13 @@ class Net(object):
         self.requests_kwargs = requests_kwargs
 
     @retry(*retryable_error, retries=10, cooldown=random.randint(1, 3))
-    async def down(self, _url, _referer):
+    async def down(self, _url, _referer, _request_content_type: bool = False):
         async with ClientManager(self.session, **self.conn_opt) as session:
+            if _request_content_type is True:
+                async with session.head(_url, headers={'Referer': _referer}, **self.requests_kwargs) as head:
+                    yield head.content_type
             async with session.get(_url, headers={'Referer': _referer}, **self.requests_kwargs) as res:
-                c = await res.read()
-                t = res.content_type
-
-        await asyncio.sleep(0)
-        return c, t
+                yield await res.read()
 
     @retry(*retryable_error, retries=10, cooldown=random.randint(1, 3))
     async def auth(self, _url, _headers, _data):
