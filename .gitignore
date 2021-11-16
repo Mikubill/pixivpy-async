@@ -2,6 +2,7 @@
 core/
 
 .idea
+.vscode
 *.pyc
 dumpObj.py
 url.txt
@@ -18,3 +19,5 @@ demo_debug.py
 
 setup.cfg
 PixivPy_Async.egg-info/
+
+abc*

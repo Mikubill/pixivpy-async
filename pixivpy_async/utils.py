@@ -39,11 +39,15 @@ class Utils:
                         result.update(
                             {'%s' % key: ','.join(map(str, value))}
                         )
-                    elif key in "ids":
+                    elif key in ["ids"]:
                         result.update(
                             {'%s[]' % key: ",".join(
                                 [str(pid) for pid in value])}
                         )
+                    elif key in ["viewed"]:
+                        [result.update(
+                            {'%s[%d]' % (key, k): value[k]}
+                        ) for k in range(len(value))]
                     else:
                         result.update(
                             {'%s[]' % key: ','.join(map(str, value))}
