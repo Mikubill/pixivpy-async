@@ -309,7 +309,7 @@ class AppPixivAPI(BasePixivAPI):
             bookmark_illust_ids: list = None,
             include_privacy_policy=None,
             req_auth: bool = True,
-            viewed: [int] = None
+            viewed: list = None
     ) -> dict:
         if req_auth:
             method, url = self.api.illust_recommended_auth
@@ -613,6 +613,7 @@ class AppPixivAPI(BasePixivAPI):
         )
         return await self.requests_(method=method, url=url, params=params, auth=req_auth)
 
+    # 用户小说列表
     async def user_novels(
             self,
             user_id: int,
@@ -628,6 +629,7 @@ class AppPixivAPI(BasePixivAPI):
         )
         return await self.requests_(method=method, url=url, params=params, auth=req_auth)
 
+    # 小说系列详情
     async def novel_series(
             self,
             series_id: int,
@@ -643,6 +645,7 @@ class AppPixivAPI(BasePixivAPI):
         )
         return await self.requests_(method=method, url=url, params=params, auth=req_auth)
 
+    # 小说详情
     async def novel_detail(
             self,
             novel_id: int,
@@ -654,6 +657,7 @@ class AppPixivAPI(BasePixivAPI):
         )
         return await self.requests_(method=method, url=url, params=params, auth=req_auth)
 
+    # 小说正文 
     async def novel_text(
             self,
             novel_id: int,
@@ -664,6 +668,17 @@ class AppPixivAPI(BasePixivAPI):
             novel_id=novel_id,
         )
         return await self.requests_(method=method, url=url, params=params, auth=req_auth)
+
+    # 大家的新作
+    ## content_type: [illust, manga]
+    async def illust_new(self, content_type="illust", filter='for_ios', max_illust_id=None, req_auth=True):
+        method, url = self.api.illust_new
+        params = self.set_params(
+            content_type=content_type,
+            filter=filter,
+        )
+        r = self.no_auth_requests_call('GET', url, params=params, req_auth=req_auth)
+        return self.parse_result(r)
 
     # 特辑详情 (无需登录，调用Web API)
     async def showcase_article(

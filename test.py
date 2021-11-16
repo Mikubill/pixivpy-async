@@ -15,6 +15,9 @@ sys.dont_write_bytecode = True
 
 _USERNAME = "userbay"
 _PASSWORD = "UserPay"
+
+# get your refresh_token, and replace _TOKEN
+#  https://gist.github.com/ZipFile/c9ebedb224406f4f11845ab700124362
 _TOKEN = "0zeYA-PllRYp1tfrsq_w3vHGU1rPy237JMf5oDt73c4"
 
 aapi = AppPixivAPI()
@@ -83,6 +86,9 @@ class TestMethods(unittest.TestCase):
         self.assertIsNotNone(detail)
         self.assertIsNotNone(detail.user)
         self.assertEqual(detail.user.id, 275527)
+
+    def test_new_illusts(self):
+        self.assertIsNotNone(aapi.new_illusts())
 
     def test_illust_1(self):
         illust = aapi.illust_detail(59580629)

@@ -59,6 +59,10 @@ class API:
         return 'GET', '%s/illust/ranking' % self.appv1
 
     @property
+    def illust_new(self):
+        return 'GET', '%s/illust/new' % self.apiv1
+
+    @property
     def trending_tags_illust(self):
         return 'GET', '%s/trending-tags/illust' % self.appv1
 
