@@ -53,11 +53,11 @@ class ByPassResolver(AbstractResolver):
         通过 Cloudflare 的 DNS over HTTPS 请求真实的 IP 地址。
         """
         URLS = (
-            "https://1.0.0.1/dns-query",
             "https://1.1.1.1/dns-query",
-            "https://[2606:4700:4700::1001]/dns-query",
             "https://[2606:4700:4700::1111]/dns-query",
             "https://cloudflare-dns.com/dns-query",
+            "https://dns10.quad9.net/dns-query",
+            "https://dns.google/dns-query"
         )
         params = {
             "ct": "application/dns-json",
@@ -76,3 +76,5 @@ class ByPassResolver(AbstractResolver):
         for r in results:
             if not isinstance(r, Exception):
                 return r
+        
+        raise Exception("Failed to resolve {}".format(hostname))

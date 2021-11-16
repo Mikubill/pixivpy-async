@@ -677,8 +677,7 @@ class AppPixivAPI(BasePixivAPI):
             content_type=content_type,
             filter=filter,
         )
-        r = self.no_auth_requests_call('GET', url, params=params, req_auth=req_auth)
-        return self.parse_result(r)
+        return await self.requests_(method=method, url=url, params=params, auth=req_auth)
 
     # 特辑详情 (无需登录，调用Web API)
     async def showcase_article(

@@ -88,7 +88,7 @@ class TestMethods(unittest.TestCase):
         self.assertEqual(detail.user.id, 275527)
 
     def test_new_illusts(self):
-        self.assertIsNotNone(aapi.new_illusts())
+        self.assertIsNotNone(aapi.illust_new())
 
     def test_illust_1(self):
         illust = aapi.illust_detail(59580629)
