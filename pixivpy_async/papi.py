@@ -3,6 +3,8 @@ from .bapi import BasePixivAPI
 from deprecated import deprecated
 
 # Public-API
+
+
 @deprecated(version='1.2.15', reason="Public API is deprecated by Pixiv. You should use AppPixivAPI.")
 class PixivAPI(BasePixivAPI):
     def __init__(self, **requests_kwargs):

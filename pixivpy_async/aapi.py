@@ -657,7 +657,7 @@ class AppPixivAPI(BasePixivAPI):
         )
         return await self.requests_(method=method, url=url, params=params, auth=req_auth)
 
-    # 小说正文 
+    # 小说正文
     async def novel_text(
             self,
             novel_id: int,

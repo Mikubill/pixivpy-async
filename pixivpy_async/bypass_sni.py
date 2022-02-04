@@ -22,28 +22,24 @@ class ByPassResolver(AbstractResolver):
         self.force_hosts = force_hosts
 
     async def resolve(self, host: str, port, family=socket.AF_INET) -> List[Dict[str, Any]]:
-    
+
         new_host = host
         if self.force_hosts and host in ["app-api.pixiv.net", "public-api.secure.pixiv.net", "www.pixiv.net", "oauth.secure.pixiv.net"]:
             new_host = "www.pixivision.net"
 
         done, pending = await asyncio.wait([asyncio.create_task(
-            self._resolve(endpoint, new_host, family)) 
+            self._resolve(endpoint, new_host, family))
             for endpoint in self.endpoints], return_when=asyncio.FIRST_COMPLETED)
-                    
-        ips = []           
-        for task in done:
-            if task.exception() is None:
-                ips = task.result()  
-        
-        while len(ips) == 0:
-            task = pending.pop()
-            await task
-            ips = task.result() if task.exception() is None else ips
+
+        ips = []
+        for task in done.union(pending):
+            ips = await self.read_result(task)
+            if len(ips) > 0:
+                break
 
         if len(ips) == 0:
             raise Exception("Failed to resolve {}".format(host))
-        
+
         result = []
         for i in ips:
             result.append({
@@ -56,6 +52,14 @@ class ByPassResolver(AbstractResolver):
             })
         return result
 
+    async def read_result(self, task: asyncio.Task) -> List[str]:
+        await task
+        try:
+            return task.result()
+        except Exception as e:
+            logging.warning(e)
+            return []
+
     async def close(self) -> None:
         pass
 
@@ -63,9 +67,10 @@ class ByPassResolver(AbstractResolver):
         data = json.loads(response)
         if data['Status'] != 0:
             raise Exception("Failed to resolve {}".format(hostname))
-        
+
         # Pattern to match IPv4 addresses (?)
-        pattern = re.compile(r"((\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.){3}(1\d\d|2[0-4]\d|25[0-5]|[1-9]\d|\d)")
+        pattern = re.compile(
+            r"((\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.){3}(1\d\d|2[0-4]\d|25[0-5]|[1-9]\d|\d)")
         result = []
 
         for i in data["Answer"]:
@@ -73,7 +78,7 @@ class ByPassResolver(AbstractResolver):
 
             if pattern.match(ip) is not None:
                 result.append(ip)
-        
+
         return result
 
     async def _resolve(self, endpoint, hostname, family, timeout=5) -> List[str]:
@@ -90,5 +95,5 @@ class ByPassResolver(AbstractResolver):
                 if resp.status == 200:
                     return await self.parse_result(hostname, await resp.text())
                 else:
-                    raise Exception("Failed to resolve {} with {}: HTTP Status {}".format(hostname, endpoint, resp.status))
-
+                    raise Exception("Failed to resolve {} with {}: HTTP Status {}".format(
+                        hostname, endpoint, resp.status))
