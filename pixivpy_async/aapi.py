@@ -675,6 +675,7 @@ class AppPixivAPI(BasePixivAPI):
         method, url = self.api.illust_new
         params = self.set_params(
             content_type=content_type,
+            max_illust_id=max_illust_id,
             filter=filter,
         )
         return await self.requests_(method=method, url=url, params=params, auth=req_auth)

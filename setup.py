@@ -22,7 +22,7 @@ setuptools.setup(
     ],
     keywords=['pixiv', 'api', 'pixivpy', 'pixivpy_async'],
     packages=['pixivpy_async'],
-    install_requires=['aiohttp', 'aiofiles'],
+    install_requires=['aiohttp', 'aiofiles', 'deprecated'],
     extra_requires={
         'socks': [
             'aiohttp_socks',
