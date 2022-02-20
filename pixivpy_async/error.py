@@ -21,6 +21,15 @@ class NoLoginError(PixivError):
         return self.reason
 
 
+class LoginError(PixivError):
+    def __init__(self):
+        self.reason = 'Password login is no longer supported, please use `login_web` instead.'
+        super(PixivError, self).__init__(self, self.reason)
+
+    def __str__(self):
+        return self.reason
+
+
 class AuthCredentialsError(PixivError):
     def __init__(self, code=None, r=None):
         self.reason = 'Run auth() failed! Check username and password.\nHTTP %s: %s' % (code, r)

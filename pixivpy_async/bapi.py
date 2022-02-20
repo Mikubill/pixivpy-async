@@ -143,7 +143,7 @@ class BasePixivAPI(Net, Utils):
         }
 
         if (username is not None) and (password is not None):
-            raise LoginError('password login is no longer supported, please use `login_web` instead')
+            raise LoginError
             data['grant_type'] = 'password'
             data['username'] = username
             data['password'] = password

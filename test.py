@@ -181,7 +181,7 @@ class TestMethods(unittest.TestCase):
     def test_bookmark_add(self):
 
         illust_id = 74187223
-        tags = ['Fate/GO', '50000users入り', '私服']
+        tags = ['Fate/GO', '50000users 入り', '私服']
         self.assertIsNotNone(aapi.illust_bookmark_add(illust_id, tags=tags))
         self.assertIsNotNone(aapi.illust_bookmark_delete(illust_id))
         self.assertIsNotNone(aapi.illust_bookmark_detail(illust_id))
@@ -212,7 +212,7 @@ class TestMethods(unittest.TestCase):
         self.assertRaises(error.AuthTokenError,
                           newaapi2.login, refresh_token='89urwei')
         newaapi3 = AppPixivAPI()
-        self.assertRaises(error.AuthCredentialsError, newaapi3.login,
+        self.assertRaises(error.LoginError, newaapi3.login,
                           username='89urwei', password='97324yuieh')
         self.assertIsNone(newaapi.set_auth('None', 'None'))
         self.assertIsNone(newaapi.set_client('None', 'None'))

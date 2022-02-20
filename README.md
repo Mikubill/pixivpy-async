@@ -58,13 +58,24 @@ aapi = AppPixivAPI(client=client.start())
 await client.close()
 
 # Or Following Standard Usage
-papi = PixivAPI()
 aapi = AppPixivAPI()
 
-# 绕过SNI检测
-papi = PixivAPI(bypass=True)
+# 绕过 SNI 检测
 aapi = AppPixivAPI(bypass=True)
 
+```
+
+## Login
+
+```python
+# For App Pixiv API
+await aapi.login(username, password)
+
+# Or
+await aapi.login(refresh_token=TOKEN)
+
+# Login with oauth (manually)
+await aapi.login_web()
 ```
 
 ## Proxy
@@ -75,7 +86,6 @@ Use environment variables, automatically recognized by aiohttp (not support sock
 
 ```python
 ...PixivClient(env=True)
-...PixivAPI(env=True)
 ...AppPixivAPI(env=True)
 ```
 
@@ -85,7 +95,6 @@ If use the socks5/socks4 proxy, make sure the package is installed with [socks p
 
 ```python
 ...PixivClient(proxy="socks5://127.0.0.1:8080")
-...PixivAPI(proxy="socks5://127.0.0.1:8080")
 ...AppPixivAPI(proxy="socks5://127.0.0.1:8080")
 ```
 
@@ -102,19 +111,6 @@ if __name__ == '__main__':
 
 Note that env will be ignored when a proxy is specified.
 
-## Login
-
-```python
-# For Public Pixiv API
-await papi.login(username, password)
-# Or
-await papi.login(refresh_token=TOKEN)
-
-# For App Pixiv API
-await aapi.login(username, password)
-# Or
-await aapi.login(refresh_token=TOKEN)
-```
 
 ## Doing stuff
 
@@ -155,6 +151,7 @@ await aapi.novel_series(...)
 await aapi.novel_detail(...)
 await aapi.novel_text(...)
 
+# papi is deprecated
 await papi.works(46363414)
 await papi.users(1184799)
 await papi.me_feeds(show_r18=0)
