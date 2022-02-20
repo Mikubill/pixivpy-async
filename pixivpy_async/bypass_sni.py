@@ -15,7 +15,9 @@ class ByPassResolver(AbstractResolver):
 
     def __init__(self, endpoints=None, force_hosts=True):
         self.endpoints = [
+            "https://1.0.0.1/dns-query",
             "https://1.1.1.1/dns-query",
+            "https://[2606:4700:4700::1001]/dns-query",
             "https://[2606:4700:4700::1111]/dns-query",
             "https://cloudflare-dns.com/dns-query",
         ] if endpoints is None else endpoints
@@ -31,11 +33,9 @@ class ByPassResolver(AbstractResolver):
             self._resolve(endpoint, new_host, family))
             for endpoint in self.endpoints], return_when=asyncio.FIRST_COMPLETED)
 
-        ips = []
-        for task in done.union(pending):
-            ips = await self.read_result(task)
-            if len(ips) > 0:
-                break
+        ips = await self.read_result(done.union(pending))
+        for future in pending:
+            future.cancel()
 
         if len(ips) == 0:
             raise Exception("Failed to resolve {}".format(host))
@@ -52,14 +52,18 @@ class ByPassResolver(AbstractResolver):
             })
         return result
 
-    async def read_result(self, task: asyncio.Task) -> List[str]:
-        await task
+    async def read_result(self, tasks: List[asyncio.Task]) -> List[str]:
+        if len(tasks) == 0:
+            return []
+        task = tasks.pop()
+        
         try:
+            await task
             return task.result()
         except Exception as e:
-            logging.warning(e)
-            return []
-
+            print("caught:", repr(e))
+            return await self.read_result(tasks)
+            
     async def close(self) -> None:
         pass
 
@@ -68,7 +72,7 @@ class ByPassResolver(AbstractResolver):
         if data['Status'] != 0:
             raise Exception("Failed to resolve {}".format(hostname))
 
-        # Pattern to match IPv4 addresses (?)
+        # Pattern to match IPv4 addresses 
         pattern = re.compile(
             r"((\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.){3}(1\d\d|2[0-4]\d|25[0-5]|[1-9]\d|\d)")
         result = []
