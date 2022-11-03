@@ -1,9 +1,12 @@
 import asyncio
+import json
+
 import aiohttp
 
 
 class PixivClient:
-    def __init__(self, limit=30, timeout=10, env=False, internal=False, proxy=None, bypass=False):
+    def __init__(self, limit=30, timeout=10, env=False, internal=False, proxy=None, bypass=False,
+                 json_dumps=json.dumps):
         """
             When 'env' is True and 'proxy' is None, possible proxies will be
             obtained automatically (wrong proxy may be obtained).
@@ -50,6 +53,7 @@ class PixivClient:
             connector=self.conn,
             timeout=aiohttp.ClientTimeout(total=timeout),
             trust_env=env,
+            json_serialize=json_dumps
         )
 
         if proxy and _flag:

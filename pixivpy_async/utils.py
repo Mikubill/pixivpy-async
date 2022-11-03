@@ -60,7 +60,7 @@ class Utils:
 
     @staticmethod
     def parse_json(_):
-        return json.loads(json.dumps(_), object_hook=JsonDict)
+        return JsonDict(_)
 
     @staticmethod
     def parse_qs(next_url):
