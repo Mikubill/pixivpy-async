@@ -127,6 +127,14 @@ class API:
         return 'GET', '%s/user/novels' % self.appv1
 
     @property
+    def novel_follow(self):
+        return 'GET', '%s/novel/follow' % self.appv1
+
+    @property
+    def novel_new(self):
+        return 'GET', '%s/novel/new' % self.appv1
+
+    @property
     def novel_series(self):
         return 'GET', '%s/novel/series' % self.appv2
 
