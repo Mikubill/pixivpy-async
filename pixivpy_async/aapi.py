@@ -629,6 +629,43 @@ class AppPixivAPI(BasePixivAPI):
         )
         return await self.requests_(method=method, url=url, params=params, auth=req_auth)
 
+    async def novel_follow(
+            self,
+            req_auth: bool = True,
+            restrict:str= 'all',
+            offset:int|None = None
+    ):
+        '''
+            返回已关注用户的新小说。最多30个项目。
+
+            restrict(int): 返回内容的限制。可以是 'all', 'public' or 'private'。public表示非R18且非R18G，private表示R18或R18G，all表示二者全部。
+
+            offset(int|None): 距离最新的小说的距离。为None时表示从最新的小说开始取得，为1时表示从第二新的小说开始取得，以此类推。不可以填0。
+        '''
+        method, url = self.api.novel_follow
+        params = self.set_params(
+            restrict=restrict,
+            offset=offset
+        )
+
+        return await self.requests_(method=method,url=url,params=params,auth=req_auth)
+
+    async def novel_new(
+            self,
+            filter:str = 'for_ios',
+            max_novel_id:int | str | None = None,
+            req_auth:bool = True
+            ):
+        method,url = self.api.novel_new
+        params = self.set_params(
+            filter = filter,
+            max_novel_id = max_novel_id
+        )
+
+        return await self.requests_(method=method,url=url,params=params,auth=req_auth)
+
+
+
     # 小说系列详情
     async def novel_series(
             self,
